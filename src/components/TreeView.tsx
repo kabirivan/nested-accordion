@@ -7,34 +7,50 @@ import ClimaticFloorChart from './ClimaticFloorChart';
 import RedListStatus from './RedListStatus';
 import TechnicalSheet from './TechnicalSheet';
 
-interface FrogAccordionProps {
+interface TreeViewProps {
   readonly orders: FrogOrder[];
 }
 
-export default function FrogAccordion({ orders }: FrogAccordionProps) {
-  const [openItems, setOpenItems] = useState<Set<string>>(new Set());
+export default function TreeView({ orders }: TreeViewProps) {
+  const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
   const [selectedSheet, setSelectedSheet] = useState<{ type: 'species' | 'family', data: FrogSpecies | FrogFamily } | null>(null);
 
-
   const toggleItem = (itemId: string) => {
-    const newOpenItems = new Set(openItems);
-    if (newOpenItems.has(itemId)) {
-      newOpenItems.delete(itemId);
+    const newExpandedItems = new Set(expandedItems);
+    if (newExpandedItems.has(itemId)) {
+      newExpandedItems.delete(itemId);
     } else {
-      newOpenItems.add(itemId);
+      newExpandedItems.add(itemId);
     }
-    setOpenItems(newOpenItems);
+    setExpandedItems(newExpandedItems);
   };
 
-  const isOpen = (itemId: string) => openItems.has(itemId);
+  const isExpanded = (itemId: string) => expandedItems.has(itemId);
 
-  const renderSpecies = (species: FrogSpecies) => (
-    <div key={species.id} className="bg-card p-4 hover:bg-gray-50 hover:shadow-sm transition-all duration-200 animate-fade-in border-b border-gray-100 last:border-b-0 ml-4 border-l-2 border-l-gray-200 hover:border-l-gray-400 cursor-pointer group">
-      <div className="flex items-center gap-4">
-        {/* Nombre científico */}
-        <div className="flex-1 min-w-0">
+  const renderSpecies = (species: FrogSpecies, depth: number, isLast: boolean) => (
+    <div key={species.id} className="flex items-center gap-3 py-2 hover:bg-subtle transition-colors relative">
+      <div className="flex items-center" style={{ width: `${depth * 24}px` }}>
+        {/* Líneas de conexión */}
+        {Array.from({ length: depth }).map((_, i) => (
+          <div key={`species-line-${species.id}-${i}`} className="w-6 h-full relative">
+            {i === depth - 1 ? (
+              <>
+                {/* Línea vertical y horizontal para el último nivel */}
+                <div className={`absolute left-0 w-px bg-gray-300 ${isLast ? 'h-1/2' : 'h-full'}`} style={{ top: 0 }} />
+                <div className="absolute left-0 top-1/2 w-3 h-px bg-gray-300" />
+              </>
+            ) : (
+              /* Línea vertical continua para niveles anteriores */
+              <div className="absolute left-0 w-px h-full bg-gray-300" />
+            )}
+          </div>
+        ))}
+      </div>
+      
+      <div className="flex-1 min-w-0 flex items-center gap-3">
+        <div className="flex-1">
           <div className="flex items-center gap-2">
-            <span className="text-primary font-medium text-sm group-hover:text-black transition-colors">
+            <span className="text-primary font-medium text-sm">
               {species.scientificName}
             </span>
             <span className="text-tertiary text-xs">
@@ -46,7 +62,6 @@ export default function FrogAccordion({ orders }: FrogAccordionProps) {
           </div>
         </div>
         
-        {/* Endémica */}
         <div className="w-8 text-center">
           {species.isEndemic ? (
             <span className="text-black text-lg">✓</span>
@@ -55,12 +70,10 @@ export default function FrogAccordion({ orders }: FrogAccordionProps) {
           )}
         </div>
         
-        {/* Lista Roja */}
         <div className="w-12 text-center">
           <RedListStatus status={species.redListStatus} />
         </div>
         
-        {/* Pisos Climáticos */}
         <div className="w-20">
           <ClimaticFloorChart 
             altitudinalRange={species.altitudinalRange}
@@ -68,7 +81,6 @@ export default function FrogAccordion({ orders }: FrogAccordionProps) {
           />
         </div>
 
-        {/* Botón Ficha Técnica */}
         <button
           onClick={(e) => {
             e.stopPropagation();
@@ -83,25 +95,55 @@ export default function FrogAccordion({ orders }: FrogAccordionProps) {
     </div>
   );
 
-  const renderFamily = (family: FrogFamily) => (
-    <div key={family.id} className="bg-card overflow-hidden">
-      <div className="w-full px-4 py-3 text-left bg-card hover:bg-subtle transition-colors duration-200 flex items-center justify-between">
-        <div 
-          className="flex-1 cursor-pointer"
-          onClick={() => toggleItem(`family-${family.id}`)}
-        >
-          <div className="flex items-center gap-2 mb-1">
-            <h3 className="font-semibold text-primary">{family.name}</h3>
-            <span className="text-tertiary text-sm">
-              ({family.commonNames.join(', ')})
-            </span>
+  const renderFamily = (family: FrogFamily, depth: number, isLast: boolean) => {
+    const familyId = `family-${family.id}`;
+    const expanded = isExpanded(familyId);
+
+    return (
+      <div key={family.id}>
+        <div className="flex items-center gap-3 py-3 hover:bg-subtle transition-colors relative">
+          <div className="flex items-center" style={{ width: `${depth * 24}px` }}>
+            {/* Líneas de conexión */}
+            {Array.from({ length: depth }).map((_, i) => (
+              <div key={`family-line-${family.id}-${i}`} className="w-6 h-full relative">
+                {i === depth - 1 ? (
+                  <>
+                    {/* Línea vertical y horizontal para el último nivel */}
+                    <div className={`absolute left-0 w-px bg-gray-300 ${isLast && !expanded ? 'h-1/2' : 'h-full'}`} style={{ top: 0 }} />
+                    <div className="absolute left-0 top-1/2 w-3 h-px bg-gray-300" />
+                  </>
+                ) : (
+                  /* Línea vertical continua para niveles anteriores */
+                  <div className="absolute left-0 w-px h-full bg-gray-300" />
+                )}
+              </div>
+            ))}
           </div>
-          <p className="text-sm text-secondary">
-            {family.summary.totalSpecies} especies, {family.summary.totalGenera} géneros 
-            ({family.summary.endemicSpecies} endémicas, {family.summary.redListSpecies} en Lista Roja)
-          </p>
-        </div>
-        <div className="flex items-center gap-2 ml-2 flex-shrink-0">
+          
+          <button
+            onClick={() => toggleItem(familyId)}
+            className="flex-shrink-0"
+          >
+            {expanded ? (
+              <ChevronDownIcon className="h-5 w-5 text-secondary" />
+            ) : (
+              <ChevronRightIcon className="h-5 w-5 text-secondary" />
+            )}
+          </button>
+
+          <div className="flex-1 cursor-pointer" onClick={() => toggleItem(familyId)}>
+            <div className="flex items-center gap-2 mb-1">
+              <h3 className="font-semibold text-primary">{family.name}</h3>
+              <span className="text-tertiary text-sm">
+                ({family.commonNames.join(', ')})
+              </span>
+            </div>
+            <p className="text-sm text-secondary">
+              {family.summary.totalSpecies} especies, {family.summary.totalGenera} géneros 
+              ({family.summary.endemicSpecies} endémicas, {family.summary.redListSpecies} en Lista Roja)
+            </p>
+          </div>
+
           <button
             onClick={(e) => {
               e.stopPropagation();
@@ -112,69 +154,58 @@ export default function FrogAccordion({ orders }: FrogAccordionProps) {
           >
             <RectangleGroupIcon className="h-5 w-5 text-black" />
           </button>
+        </div>
+
+        {expanded && (
+          <div>
+            {family.species.map((species, index) => 
+              renderSpecies(species, depth + 1, index === family.species.length - 1)
+            )}
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  const renderOrder = (order: FrogOrder, depth: number) => {
+    const orderId = `order-${order.id}`;
+    const expanded = isExpanded(orderId);
+
+    return (
+      <div key={order.id} className="mb-2">
+        <div className="flex items-center gap-3 py-4 bg-gray-100 hover:bg-gray-200 transition-colors border-l-4 border-gray-700">
+          <div style={{ width: `${depth * 24}px` }} />
+          
           <button
-            onClick={() => toggleItem(`family-${family.id}`)}
-            className="p-1"
+            onClick={() => toggleItem(orderId)}
+            className="flex-shrink-0"
           >
-            {isOpen(`family-${family.id}`) ? (
-              <ChevronDownIcon className="h-5 w-5 text-secondary" />
+            {expanded ? (
+              <ChevronDownIcon className="h-6 w-6 text-primary" />
             ) : (
-              <ChevronRightIcon className="h-5 w-5 text-secondary" />
+              <ChevronRightIcon className="h-6 w-6 text-primary" />
             )}
           </button>
-        </div>
-      </div>
-      
-      {isOpen(`family-${family.id}`) && (
-        <div className="bg-subtle animate-slide-down">
-          {/* Header de la tabla */}
-          <div className="px-4 py-2 bg-gray-50">
-            <div className="flex items-center gap-4 text-xs font-medium text-tertiary">
-              <div className="flex-1">Especie</div>
-              <div className="w-8 text-center">En</div>
-              <div className="w-12 text-center">LR</div>
-              <div className="w-20 text-center">Pisos Climáticos</div>
-            </div>
-          </div>
-          
-          {/* Lista de especies */}
-          <div className="space-y-1">
-            {family.species.map(renderSpecies)}
-          </div>
-        </div>
-      )}
-    </div>
-  );
 
-  const renderOrder = (order: FrogOrder) => (
-    <div key={order.id} className="bg-card overflow-hidden">
-      <button
-        onClick={() => toggleItem(`order-${order.id}`)}
-        className="w-full px-6 py-4 text-left bg-card text-primary hover:bg-subtle transition-colors duration-200 flex items-center justify-between border border-gray-200"
-      >
-        <div className="flex-1">
-          <h2 className="text-xl font-bold text-primary">{order.name}</h2>
-          <p className="text-secondary mt-1">
-            {order.summary.totalSpecies} especies, {order.summary.totalFamilies} familias 
-            ({order.summary.endemicSpecies} endémicas, {order.summary.redListSpecies} en Lista Roja)
-          </p>
+          <div className="flex-1 cursor-pointer" onClick={() => toggleItem(orderId)}>
+            <h2 className="text-xl font-bold text-primary">{order.name}</h2>
+            <p className="text-secondary mt-1">
+              {order.summary.totalSpecies} especies, {order.summary.totalFamilies} familias 
+              ({order.summary.endemicSpecies} endémicas, {order.summary.redListSpecies} en Lista Roja)
+            </p>
+          </div>
         </div>
-        <div className="ml-2 flex-shrink-0">
-          {isOpen(`order-${order.id}`) ? (
-            <ChevronDownIcon className="h-6 w-6 text-secondary" />
-          ) : (
-            <ChevronRightIcon className="h-6 w-6 text-secondary" />
-          )}
-        </div>
-      </button>
-      
-      {isOpen(`order-${order.id}`) && (
-        <div className="p-6 bg-subtle space-y-2 animate-slide-down">
-          {order.families.map(renderFamily)}
-        </div>
-      )}
-    </div>
-  );
+
+        {expanded && (
+          <div className="bg-white">
+            {order.families.map((family, index) => 
+              renderFamily(family, depth + 1, index === order.families.length - 1)
+            )}
+          </div>
+        )}
+      </div>
+    );
+  };
 
   return (
     <div className="flex gap-6">
@@ -185,7 +216,6 @@ export default function FrogAccordion({ orders }: FrogAccordionProps) {
             Guía de Interpretación
           </h3>
           
-          {/* Sección Endémica */}
           <div className="mb-6">
             <h4 className="font-semibold text-primary mb-3 text-sm uppercase tracking-wide">
               Endémica (En)
@@ -202,7 +232,6 @@ export default function FrogAccordion({ orders }: FrogAccordionProps) {
             </div>
           </div>
 
-          {/* Sección Lista Roja */}
           <div className="mb-6">
             <h4 className="font-semibold text-primary mb-3 text-sm uppercase tracking-wide">
               Lista Roja (LR)
@@ -231,7 +260,6 @@ export default function FrogAccordion({ orders }: FrogAccordionProps) {
             </div>
           </div>
 
-          {/* Sección Pisos Climáticos */}
           <div>
             <h4 className="font-semibold text-primary mb-3 text-sm uppercase tracking-wide">
               Pisos Climáticos
@@ -262,10 +290,10 @@ export default function FrogAccordion({ orders }: FrogAccordionProps) {
         </div>
       </aside>
 
-      {/* Contenido principal - Acordeón */}
+      {/* Contenido principal - Tree View */}
       <main className="flex-1 min-w-0">
-        <div className="space-y-2">
-          {orders.map(renderOrder)}
+        <div className="bg-white">
+          {orders.map((order) => renderOrder(order, 0))}
         </div>
       </main>
 
@@ -281,3 +309,4 @@ export default function FrogAccordion({ orders }: FrogAccordionProps) {
     </div>
   );
 }
+

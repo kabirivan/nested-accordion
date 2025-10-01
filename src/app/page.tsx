@@ -1,5 +1,6 @@
 import FrogAccordion from '@/components/FrogAccordion';
 import { frogsData } from '@/data/frogsData';
+import Link from 'next/link';
 
 export default function Home() {
   return (
@@ -15,6 +16,20 @@ export default function Home() {
             organizada por órdenes, familias y especies. Descubre información detallada 
             sobre hábitats, características y estado de conservación.
           </p>
+          
+          {/* Navegación entre vistas */}
+          <div className="mt-6 flex justify-center gap-4">
+            <span className="px-6 py-2 bg-gray-700 text-white">
+              Vista Acordeón
+            </span>
+            <Link
+              href="/tree"
+              className="px-6 py-2 bg-card text-primary border border-gray-200 hover:bg-subtle transition-colors"
+            >
+              Vista de Árbol
+            </Link>
+          </div>
+          
           <div className="mt-8 flex flex-wrap justify-center gap-4 text-sm">
             <span className="bg-card text-primary px-4 py-2 border border-gray-200">
               <span className="font-semibold">Órdenes:</span> {frogsData.length}
