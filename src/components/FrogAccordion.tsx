@@ -69,16 +69,18 @@ export default function FrogAccordion({ orders }: FrogAccordionProps) {
         </div>
 
         {/* Botón Ficha Técnica */}
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            setSelectedSheet({ type: 'species', data: species });
-          }}
-          className="p-2 hover:bg-gray-200 rounded transition-colors"
-          title="Ver ficha técnica de la especie"
-        >
-          <DocumentTextIcon className="h-5 w-5 text-black" />
-        </button>
+        <div className="w-10 flex justify-center">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setSelectedSheet({ type: 'species', data: species });
+            }}
+            className="p-2 hover:bg-gray-200 rounded transition-colors"
+            title="Ver ficha técnica de la especie"
+          >
+            <DocumentTextIcon className="h-5 w-5 text-black" />
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -128,12 +130,13 @@ export default function FrogAccordion({ orders }: FrogAccordionProps) {
       {isOpen(`family-${family.id}`) && (
         <div className="bg-subtle animate-slide-down">
           {/* Header de la tabla */}
-          <div className="px-4 py-2 bg-gray-50">
-            <div className="flex items-center gap-4 text-xs font-medium text-tertiary">
+          <div className="px-4 py-2 bg-gray-50 ml-4 border-l-2 border-l-gray-200">
+            <div className="flex items-center gap-4 text-xs font-semibold text-tertiary">
               <div className="flex-1">Especie</div>
               <div className="w-8 text-center">En</div>
               <div className="w-12 text-center">LR</div>
-              <div className="w-20 text-center">Pisos Climáticos</div>
+              <div className="w-20 text-center">Pisos climáticos</div>
+              <div className="w-10"></div>
             </div>
           </div>
           
@@ -177,97 +180,194 @@ export default function FrogAccordion({ orders }: FrogAccordionProps) {
   );
 
   return (
-    <div className="flex gap-6">
-      {/* Menú lateral - Guía de Interpretación */}
-      <aside className="hidden lg:block w-80 flex-shrink-0">
-        <div className="sticky top-4 bg-card p-6 border border-gray-200">
-          <h3 className="text-xl font-semibold text-primary mb-4 pb-3 border-b border-gray-200">
+    <div className="flex gap-3">
+      {/* Panel izquierdo - Filtros */}
+      <aside className="hidden 2xl:block w-48 flex-shrink-0">
+        <div className="sticky top-4 bg-card p-3 border border-gray-200">
+          <h3 className="text-base font-semibold text-primary mb-2 pb-2 border-b border-gray-200">
+            Filtros
+          </h3>
+          
+          {/* Filtro por Estado de Conservación */}
+          <div className="mb-3">
+            <h4 className="font-semibold text-primary mb-1.5 text-xs">
+              Lista roja
+            </h4>
+            <div className="space-y-1.5">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" className="rounded border-gray-300 w-3 h-3" />
+                <span className="text-xs text-secondary">LC</span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" className="rounded border-gray-300 w-3 h-3" />
+                <span className="text-xs text-secondary">NT</span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" className="rounded border-gray-300 w-3 h-3" />
+                <span className="text-xs text-secondary">VU</span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" className="rounded border-gray-300 w-3 h-3" />
+                <span className="text-xs text-secondary">EN</span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" className="rounded border-gray-300 w-3 h-3" />
+                <span className="text-xs text-secondary">CR</span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" className="rounded border-gray-300 w-3 h-3" />
+                <span className="text-xs text-secondary">EX/EW</span>
+              </label>
+            </div>
+          </div>
+
+          {/* Filtro por Endemismo */}
+          <div className="mb-3">
+            <h4 className="font-semibold text-primary mb-1.5 text-xs">
+              Endemismo
+            </h4>
+            <div className="space-y-1.5">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" className="rounded border-gray-300 w-3 h-3" />
+                <span className="text-xs text-secondary">Endémicas</span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" className="rounded border-gray-300 w-3 h-3" />
+                <span className="text-xs text-secondary">No endémicas</span>
+              </label>
+            </div>
+          </div>
+
+          {/* Filtro por Pisos Climáticos */}
+          <div className="mb-3">
+            <h4 className="font-semibold text-primary mb-1.5 text-xs">
+              Pisos climáticos
+            </h4>
+            <div className="space-y-1.5">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" className="rounded border-gray-300 w-3 h-3" />
+                <span className="text-xs text-secondary">Tropical</span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" className="rounded border-gray-300 w-3 h-3" />
+                <span className="text-xs text-secondary">Subtropical</span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" className="rounded border-gray-300 w-3 h-3" />
+                <span className="text-xs text-secondary">Templado</span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" className="rounded border-gray-300 w-3 h-3" />
+                <span className="text-xs text-secondary">Frío</span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" className="rounded border-gray-300 w-3 h-3" />
+                <span className="text-xs text-secondary">Páramo</span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" className="rounded border-gray-300 w-3 h-3" />
+                <span className="text-xs text-secondary">Nival</span>
+              </label>
+            </div>
+          </div>
+
+          {/* Botón para limpiar filtros */}
+          <button className="w-full px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-primary text-xs transition-colors border border-gray-200">
+            Limpiar Filtros
+          </button>
+        </div>
+      </aside>
+
+      {/* Contenido central - Acordeón */}
+      <main className="flex-1 min-w-0">
+        <div className="space-y-4">
+          {orders.map(renderOrder)}
+        </div>
+      </main>
+
+      {/* Panel derecho - Guía de Interpretación */}
+      <aside className="hidden 2xl:block w-52 flex-shrink-0">
+        <div className="sticky top-4 bg-card p-3 border border-gray-200">
+          <h3 className="text-base font-semibold text-primary mb-2 pb-2 border-b border-gray-200">
             Guía de Interpretación
           </h3>
           
           {/* Sección Endémica */}
-          <div className="mb-6">
-            <h4 className="font-semibold text-primary mb-3 text-sm uppercase tracking-wide">
+          <div className="mb-3">
+            <h4 className="font-semibold text-primary mb-1.5 text-xs">
               Endémica (En)
             </h4>
-            <div className="space-y-2">
-              <div className="flex items-center gap-3">
-                <span className="text-black text-xl">✓</span>
-                <span className="text-secondary text-sm">Especie endémica (solo en Ecuador)</span>
+            <div className="space-y-1">
+              <div className="flex items-center gap-1.5">
+                <span className="text-black text-sm">✓</span>
+                <span className="text-secondary text-xs">Endémica</span>
               </div>
-              <div className="flex items-center gap-3">
-                <span className="text-tertiary text-xl">-</span>
-                <span className="text-secondary text-sm">Especie no endémica</span>
+              <div className="flex items-center gap-1.5">
+                <span className="text-tertiary text-sm">-</span>
+                <span className="text-secondary text-xs">No endémica</span>
               </div>
             </div>
           </div>
 
           {/* Sección Lista Roja */}
-          <div className="mb-6">
-            <h4 className="font-semibold text-primary mb-3 text-sm uppercase tracking-wide">
-              Lista Roja (LR)
+          <div className="mb-3">
+            <h4 className="font-semibold text-primary mb-1.5 text-xs">
+              Lista roja (LR)
             </h4>
-            <div className="space-y-2">
-              <div className="flex items-center gap-3">
-                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold" style={{ backgroundColor: '#F0F9FF', color: '#0369A1' }}>LC</span>
-                <span className="text-secondary text-sm">Preocupación Menor</span>
+            <div className="space-y-1">
+              <div className="flex items-center gap-1.5">
+                <span className="inline-flex items-center px-1 py-0.5 rounded-full text-xs font-semibold" style={{ backgroundColor: '#F0F9FF', color: '#0369A1' }}>LC</span>
+                <span className="text-secondary text-xs">P. Menor</span>
               </div>
-              <div className="flex items-center gap-3">
-                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold" style={{ backgroundColor: '#FEF3C7', color: '#D97706' }}>NT</span>
-                <span className="text-secondary text-sm">Casi Amenazado</span>
+              <div className="flex items-center gap-1.5">
+                <span className="inline-flex items-center px-1 py-0.5 rounded-full text-xs font-semibold" style={{ backgroundColor: '#FEF3C7', color: '#D97706' }}>NT</span>
+                <span className="text-secondary text-xs">C. Amenazado</span>
               </div>
-              <div className="flex items-center gap-3">
-                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold" style={{ backgroundColor: '#FED7AA', color: '#EA580C' }}>VU</span>
-                <span className="text-secondary text-sm">Vulnerable</span>
+              <div className="flex items-center gap-1.5">
+                <span className="inline-flex items-center px-1 py-0.5 rounded-full text-xs font-semibold" style={{ backgroundColor: '#FED7AA', color: '#EA580C' }}>VU</span>
+                <span className="text-secondary text-xs">Vulnerable</span>
               </div>
-              <div className="flex items-center gap-3">
-                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold" style={{ backgroundColor: '#FECACA', color: '#DC2626' }}>EN</span>
-                <span className="text-secondary text-sm">En Peligro</span>
+              <div className="flex items-center gap-1.5">
+                <span className="inline-flex items-center px-1 py-0.5 rounded-full text-xs font-semibold" style={{ backgroundColor: '#FECACA', color: '#DC2626' }}>EN</span>
+                <span className="text-secondary text-xs">En Peligro</span>
               </div>
-              <div className="flex items-center gap-3">
-                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold" style={{ backgroundColor: '#FEE2E2', color: '#B91C1C' }}>CR</span>
-                <span className="text-secondary text-sm">Críticamente Amenazado</span>
+              <div className="flex items-center gap-1.5">
+                <span className="inline-flex items-center px-1 py-0.5 rounded-full text-xs font-semibold" style={{ backgroundColor: '#FEE2E2', color: '#B91C1C' }}>CR</span>
+                <span className="text-secondary text-xs">Crítico</span>
               </div>
             </div>
           </div>
 
           {/* Sección Pisos Climáticos */}
           <div>
-            <h4 className="font-semibold text-primary mb-3 text-sm uppercase tracking-wide">
-              Pisos Climáticos
+            <h4 className="font-semibold text-primary mb-1.5 text-xs">
+              Pisos climáticos
             </h4>
-            <div className="space-y-2">
-              <div className="flex items-center gap-3">
-                <div className="w-6 h-3 rounded" style={{ backgroundColor: '#90EE90' }}></div>
-                <span className="text-secondary text-sm">Tropical (0-1000m)</span>
+            <div className="space-y-1">
+              <div className="flex items-center gap-1.5">
+                <div className="w-4 h-2 rounded" style={{ backgroundColor: '#90EE90' }}></div>
+                <span className="text-secondary text-xs">Tropical</span>
               </div>
-              <div className="flex items-center gap-3">
-                <div className="w-6 h-3 rounded" style={{ backgroundColor: '#D2B48C' }}></div>
-                <span className="text-secondary text-sm">Subtropical (1000-2000m)</span>
+              <div className="flex items-center gap-1.5">
+                <div className="w-4 h-2 rounded" style={{ backgroundColor: '#D2B48C' }}></div>
+                <span className="text-secondary text-xs">Subtropical</span>
               </div>
-              <div className="flex items-center gap-3">
-                <div className="w-6 h-3 rounded" style={{ backgroundColor: '#CD853F' }}></div>
-                <span className="text-secondary text-sm">Templado (2000-3000m)</span>
+              <div className="flex items-center gap-1.5">
+                <div className="w-4 h-2 rounded" style={{ backgroundColor: '#CD853F' }}></div>
+                <span className="text-secondary text-xs">Templado</span>
               </div>
-              <div className="flex items-center gap-3">
-                <div className="w-6 h-3 rounded" style={{ backgroundColor: '#8B4513' }}></div>
-                <span className="text-secondary text-sm">Frío (3000-4000m)</span>
+              <div className="flex items-center gap-1.5">
+                <div className="w-4 h-2 rounded" style={{ backgroundColor: '#8B4513' }}></div>
+                <span className="text-secondary text-xs">Frío</span>
               </div>
-              <div className="flex items-center gap-3">
-                <div className="w-6 h-3 rounded" style={{ backgroundColor: '#A0522D' }}></div>
-                <span className="text-secondary text-sm">Páramo (4000-5000m)</span>
+              <div className="flex items-center gap-1.5">
+                <div className="w-4 h-2 rounded" style={{ backgroundColor: '#A0522D' }}></div>
+                <span className="text-secondary text-xs">Páramo</span>
               </div>
             </div>
           </div>
         </div>
       </aside>
-
-      {/* Contenido principal - Acordeón */}
-      <main className="flex-1 min-w-0">
-        <div className="space-y-2">
-          {orders.map(renderOrder)}
-        </div>
-      </main>
 
       {/* Modal de Ficha Técnica */}
       {selectedSheet && (
