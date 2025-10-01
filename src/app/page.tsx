@@ -7,9 +7,6 @@ export default function Home() {
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="text-center mb-12">
-          <div className="mb-6">
-            <span className="text-6xl md:text-8xl">🐸</span>
-          </div>
           <h1 className="text-4xl md:text-6xl font-bold text-primary mb-4">
             Guía de Especies de Ranas del Mundo
           </h1>
@@ -20,15 +17,15 @@ export default function Home() {
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4 text-sm">
             <span className="bg-card text-primary px-4 py-2 border border-gray-200">
-              <span className="font-semibold">📊</span> {frogsData.length} Órdenes
+              <span className="font-semibold">Órdenes:</span> {frogsData.length}
             </span>
             <span className="bg-card text-primary px-4 py-2 border border-gray-200">
-              <span className="font-semibold">🏷️</span> {frogsData.reduce((acc, order) => acc + order.families.length, 0)} Familias
+              <span className="font-semibold">Familias:</span> {frogsData.reduce((acc, order) => acc + order.families.length, 0)}
             </span>
             <span className="bg-card text-primary px-4 py-2 border border-gray-200">
-              <span className="font-semibold">🐸</span> {frogsData.reduce((acc, order) => 
+              <span className="font-semibold">Especies:</span> {frogsData.reduce((acc, order) => 
                 acc + order.families.reduce((famAcc, family) => famAcc + family.species.length, 0), 0
-              )} Especies
+              )}
             </span>
           </div>
         </div>
@@ -36,7 +33,7 @@ export default function Home() {
         {/* Instructions */}
         <div className="bg-card p-6 mb-8">
           <h2 className="text-xl font-semibold text-primary mb-3">
-            📖 Cómo usar esta guía
+            Cómo usar esta guía
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-secondary">
             <div className="flex items-start gap-2">
