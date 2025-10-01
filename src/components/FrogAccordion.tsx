@@ -1,10 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { ChevronDownIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
+import { ChevronDownIcon, ChevronRightIcon, DocumentTextIcon, RectangleGroupIcon } from '@heroicons/react/24/outline';
 import { FrogOrder, FrogFamily, FrogSpecies } from '@/data/frogsData';
 import ClimaticFloorChart from './ClimaticFloorChart';
 import RedListStatus from './RedListStatus';
+import TechnicalSheet from './TechnicalSheet';
 
 interface FrogAccordionProps {
   readonly orders: FrogOrder[];
@@ -12,6 +13,7 @@ interface FrogAccordionProps {
 
 export default function FrogAccordion({ orders }: FrogAccordionProps) {
   const [openItems, setOpenItems] = useState<Set<string>>(new Set());
+  const [selectedSheet, setSelectedSheet] = useState<{ type: 'species' | 'family', data: FrogSpecies | FrogFamily } | null>(null);
 
 
   const toggleItem = (itemId: string) => {
@@ -65,17 +67,29 @@ export default function FrogAccordion({ orders }: FrogAccordionProps) {
             climaticFloors={species.climaticFloors}
           />
         </div>
+
+        {/* Botón Ficha Técnica */}
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            setSelectedSheet({ type: 'species', data: species });
+          }}
+          className="p-2 hover:bg-gray-200 rounded transition-colors"
+          title="Ver ficha técnica de la especie"
+        >
+          <DocumentTextIcon className="h-5 w-5 text-black" />
+        </button>
       </div>
     </div>
   );
 
   const renderFamily = (family: FrogFamily) => (
     <div key={family.id} className="bg-card overflow-hidden">
-      <button
-        onClick={() => toggleItem(`family-${family.id}`)}
-        className="w-full px-4 py-3 text-left bg-card hover:bg-subtle transition-colors duration-200 flex items-center justify-between"
-      >
-        <div className="flex-1">
+      <div className="w-full px-4 py-3 text-left bg-card hover:bg-subtle transition-colors duration-200 flex items-center justify-between">
+        <div 
+          className="flex-1 cursor-pointer"
+          onClick={() => toggleItem(`family-${family.id}`)}
+        >
           <div className="flex items-center gap-2 mb-1">
             <h3 className="font-semibold text-primary">{family.name}</h3>
             <span className="text-tertiary text-sm">
@@ -87,14 +101,29 @@ export default function FrogAccordion({ orders }: FrogAccordionProps) {
             ({family.summary.endemicSpecies} endémicas, {family.summary.redListSpecies} en Lista Roja)
           </p>
         </div>
-        <div className="ml-2 flex-shrink-0">
-          {isOpen(`family-${family.id}`) ? (
-            <ChevronDownIcon className="h-5 w-5 text-secondary" />
-          ) : (
-            <ChevronRightIcon className="h-5 w-5 text-secondary" />
-          )}
+        <div className="flex items-center gap-2 ml-2 flex-shrink-0">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setSelectedSheet({ type: 'family', data: family });
+            }}
+            className="p-2 hover:bg-gray-200 rounded transition-colors"
+            title="Ver ficha técnica de la familia"
+          >
+            <RectangleGroupIcon className="h-5 w-5 text-black" />
+          </button>
+          <button
+            onClick={() => toggleItem(`family-${family.id}`)}
+            className="p-1"
+          >
+            {isOpen(`family-${family.id}`) ? (
+              <ChevronDownIcon className="h-5 w-5 text-secondary" />
+            ) : (
+              <ChevronRightIcon className="h-5 w-5 text-secondary" />
+            )}
+          </button>
         </div>
-      </button>
+      </div>
       
       {isOpen(`family-${family.id}`) && (
         <div className="bg-subtle animate-slide-down">
@@ -239,6 +268,16 @@ export default function FrogAccordion({ orders }: FrogAccordionProps) {
           {orders.map(renderOrder)}
         </div>
       </main>
+
+      {/* Modal de Ficha Técnica */}
+      {selectedSheet && (
+        <TechnicalSheet
+          isOpen={true}
+          onClose={() => setSelectedSheet(null)}
+          data={selectedSheet.data}
+          type={selectedSheet.type}
+        />
+      )}
     </div>
   );
 }
