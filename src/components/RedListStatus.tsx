@@ -7,49 +7,49 @@ export default function RedListStatus({ status }: RedListStatusProps) {
     switch (status) {
       case 'LC': return { 
         label: 'LC', 
-        bgColor: '#F0F9FF', 
-        textColor: '#0369A1', 
+        bgColor: '#F9FAFB', 
+        textColor: '#6B7280', 
         fullName: 'Preocupación Menor' 
       };
       case 'NT': return { 
         label: 'NT', 
-        bgColor: '#FEF3C7', 
-        textColor: '#D97706', 
+        bgColor: '#F3F4F6', 
+        textColor: '#4B5563', 
         fullName: 'Casi Amenazado' 
       };
       case 'VU': return { 
         label: 'VU', 
-        bgColor: '#FED7AA', 
-        textColor: '#EA580C', 
+        bgColor: '#E5E7EB', 
+        textColor: '#374151', 
         fullName: 'Vulnerable' 
       };
       case 'EN': return { 
         label: 'EN', 
-        bgColor: '#FECACA', 
-        textColor: '#DC2626', 
+        bgColor: '#D1D5DB', 
+        textColor: '#1F2937', 
         fullName: 'En Peligro' 
       };
       case 'CR': return { 
         label: 'CR', 
-        bgColor: '#FEE2E2', 
-        textColor: '#B91C1C', 
+        bgColor: '#9CA3AF', 
+        textColor: '#111827', 
         fullName: 'Críticamente Amenazado' 
       };
       case 'EW': return { 
         label: 'EW', 
-        bgColor: '#F3F4F6', 
-        textColor: '#6B7280', 
+        bgColor: '#6B7280', 
+        textColor: '#FFFFFF', 
         fullName: 'Extinto en Estado Silvestre' 
       };
       case 'EX': return { 
         label: 'EX', 
-        bgColor: '#E5E7EB', 
-        textColor: '#374151', 
+        bgColor: '#374151', 
+        textColor: '#FFFFFF', 
         fullName: 'Extinto' 
       };
       case 'DD': return { 
         label: 'DD', 
-        bgColor: '#F9FAFB', 
+        bgColor: '#F3F4F6', 
         textColor: '#9CA3AF', 
         fullName: 'Datos Insuficientes' 
       };

@@ -81,12 +81,11 @@ body {
 
 /* Efectos hover mejorados */
 .hover-lift {
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  transition: transform 0.2s ease-in-out;
 }
 
 .hover-lift:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
 
 /* Gradientes personalizados - Blanco y Negro */
