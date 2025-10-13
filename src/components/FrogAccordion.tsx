@@ -1,23 +1,62 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { QuestionMarkCircleIcon, Bars3Icon, Squares2X2Icon, ChartBarIcon } from '@heroicons/react/24/outline';
+import { QuestionMarkCircleIcon, Bars3Icon } from '@heroicons/react/24/outline';
 import { FrogOrder, FrogFamily, FrogGenus, FrogSpecies } from '@/data/frogsData';
+import { Button } from '@/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import ClimaticFloorChart from './ClimaticFloorChart';
 import RedListStatus from './RedListStatus';
 import InterpretationGuide from './InterpretationGuide';
 import PhylogeneticTree from './PhylogeneticTree';
+import FiltersPanel from './FiltersPanel';
 
 interface FrogAccordionProps {
   readonly orders: FrogOrder[];
 }
 
+interface Filters {
+  provincia?: string;
+  listaRoja?: string;
+  endemismo?: string;
+  pisosAltitudinales?: string;
+  areaDistribucion?: string;
+  ecosistemas?: string;
+  regionesBiogeograficas?: string;
+  reservasBiosfera?: string;
+  bosquesProtegidos?: string;
+  areasProtegidas?: string;
+  pluviocidad?: { min: number; max: number };
+  temperatura?: { min: number; max: number };
+}
+
 export default function FrogAccordion({ orders }: FrogAccordionProps) {
   const [openItems, setOpenItems] = useState<Set<string>>(new Set());
   const [showGuide, setShowGuide] = useState(false);
-  const [viewMode, setViewMode] = useState<'accordion' | 'tree'>('accordion');
+  const [filters, setFilters] = useState<Filters>({});
 
+  // Cargar el estado del acordeón desde localStorage al montar
+  useEffect(() => {
+    const savedState = localStorage.getItem('accordionOpenItems');
+    if (savedState) {
+      try {
+        const parsedState = JSON.parse(savedState);
+        setOpenItems(new Set(parsedState));
+      } catch (error) {
+        console.error('Error al cargar el estado del acordeón:', error);
+      }
+    }
+  }, []);
+
+  // Guardar el estado del acordeón en localStorage cuando cambia
+  useEffect(() => {
+    if (openItems.size > 0) {
+      localStorage.setItem('accordionOpenItems', JSON.stringify(Array.from(openItems)));
+    } else {
+      localStorage.removeItem('accordionOpenItems');
+    }
+  }, [openItems]);
 
   const toggleItem = (itemId: string) => {
     const newOpenItems = new Set(openItems);
@@ -111,7 +150,7 @@ export default function FrogAccordion({ orders }: FrogAccordionProps) {
       {isOpen(`genus-${genus.id}`) && (
         <div>
           {/* Header de la tabla */}
-          <div className="px-4 py-2 bg-gray-100" style={{ marginLeft: '48px' }}>
+          <div className="px-4 py-2" style={{ marginLeft: '48px', backgroundColor: '#e8e8e8' }}>
             <div className="text-sm font-semibold text-gray-700 mb-2">
               Especie
             </div>
@@ -164,7 +203,7 @@ export default function FrogAccordion({ orders }: FrogAccordionProps) {
       {isOpen(`family-${family.id}`) && (
         <div>
           {/* Header de géneros */}
-          <div className="px-4 py-2 bg-gray-100" style={{ marginLeft: '48px' }}>
+          <div className="px-4 py-2" style={{ marginLeft: '48px', backgroundColor: '#e8e8e8' }}>
             <div className="text-sm font-semibold text-gray-700">
               Género
             </div>
@@ -204,7 +243,7 @@ export default function FrogAccordion({ orders }: FrogAccordionProps) {
       {isOpen(`order-${order.id}`) && (
         <div>
           {/* Header de familias */}
-          <div className="px-6 py-2 bg-gray-100" style={{ marginLeft: '48px' }}>
+          <div className="px-6 py-2" style={{ marginLeft: '48px', backgroundColor: '#e8e8e8' }}>
             <div className="text-sm font-semibold text-gray-700">
               Familia
             </div>
@@ -220,134 +259,26 @@ export default function FrogAccordion({ orders }: FrogAccordionProps) {
   return (
     <div className="flex gap-3">
       {/* Panel izquierdo - Filtros */}
-      <aside className="hidden 2xl:block w-48 flex-shrink-0">
-        <div className="sticky top-4 bg-card p-3 border border-gray-200">
-          <h3 className="text-base font-semibold text-primary mb-2 pb-2 border-b border-gray-200">
-            Filtros
-          </h3>
-          
-          {/* Filtro por Estado de Conservación */}
-          <div className="mb-3">
-            <h4 className="font-semibold text-primary mb-1.5 text-xs">
-              Lista roja
-            </h4>
-            <div className="space-y-1.5">
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" className="rounded border-gray-300 w-3 h-3" />
-                <span className="text-xs text-secondary">LC</span>
-              </label>
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" className="rounded border-gray-300 w-3 h-3" />
-                <span className="text-xs text-secondary">NT</span>
-              </label>
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" className="rounded border-gray-300 w-3 h-3" />
-                <span className="text-xs text-secondary">VU</span>
-              </label>
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" className="rounded border-gray-300 w-3 h-3" />
-                <span className="text-xs text-secondary">EN</span>
-              </label>
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" className="rounded border-gray-300 w-3 h-3" />
-                <span className="text-xs text-secondary">CR</span>
-              </label>
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" className="rounded border-gray-300 w-3 h-3" />
-                <span className="text-xs text-secondary">EX/EW</span>
-              </label>
-            </div>
+      <aside className="hidden 2xl:block w-80 flex-shrink-0">
+        <FiltersPanel onFiltersChange={setFilters} />
+        {Object.keys(filters).length > 0 && (
+          <div className="mt-2 text-sm text-gray-600">
+            Filtros activos: {Object.keys(filters).length}
           </div>
-
-          {/* Filtro por Endemismo */}
-          <div className="mb-3">
-            <h4 className="font-semibold text-primary mb-1.5 text-xs">
-              Endemismo
-            </h4>
-            <div className="space-y-1.5">
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" className="rounded border-gray-300 w-3 h-3" />
-                <span className="text-xs text-secondary">Endémicas</span>
-              </label>
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" className="rounded border-gray-300 w-3 h-3" />
-                <span className="text-xs text-secondary">No endémicas</span>
-              </label>
-            </div>
-          </div>
-
-          {/* Filtro por Pisos Climáticos */}
-          <div className="mb-3">
-            <h4 className="font-semibold text-primary mb-1.5 text-xs">
-              Pisos climáticos
-            </h4>
-            <div className="space-y-1.5">
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" className="rounded border-gray-300 w-3 h-3" />
-                <span className="text-xs text-secondary">Tropical</span>
-              </label>
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" className="rounded border-gray-300 w-3 h-3" />
-                <span className="text-xs text-secondary">Subtropical</span>
-              </label>
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" className="rounded border-gray-300 w-3 h-3" />
-                <span className="text-xs text-secondary">Templado</span>
-              </label>
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" className="rounded border-gray-300 w-3 h-3" />
-                <span className="text-xs text-secondary">Frío</span>
-              </label>
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" className="rounded border-gray-300 w-3 h-3" />
-                <span className="text-xs text-secondary">Páramo</span>
-              </label>
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" className="rounded border-gray-300 w-3 h-3" />
-                <span className="text-xs text-secondary">Nival</span>
-              </label>
-            </div>
-          </div>
-
-          {/* Botón para limpiar filtros */}
-          <button className="w-full px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-primary text-xs transition-colors border border-gray-200">
-            Limpiar Filtros
-          </button>
-        </div>
+        )}
       </aside>
 
       {/* Contenido central - Acordeón o Árbol */}
       <main className="flex-1 min-w-0 relative">
-        {/* Botones de cambio de vista */}
-        <div className="flex gap-2 mb-4">
-          <button
-            onClick={() => setViewMode('accordion')}
-            className={`flex items-center gap-2 px-3 py-2 text-sm font-medium rounded transition-colors ${
-              viewMode === 'accordion'
-                ? 'bg-gray-200 text-gray-800'
-                : 'bg-white text-gray-600 hover:bg-gray-50'
-            }`}
-          >
-            <Squares2X2Icon className="h-4 w-4" />
-            Acordeón
-          </button>
-          <button
-            onClick={() => setViewMode('tree')}
-            className={`flex items-center gap-2 px-3 py-2 text-sm font-medium rounded transition-colors ${
-              viewMode === 'tree'
-                ? 'bg-gray-200 text-gray-800'
-                : 'bg-white text-gray-600 hover:bg-gray-50'
-            }`}
-          >
-            <ChartBarIcon className="h-4 w-4" />
-            Árbol Filogenético
-          </button>
-        </div>
+        <Tabs defaultValue="accordion" className="w-full">
+          <TabsList className="mb-4">
+            <TabsTrigger value="accordion">Acordeón</TabsTrigger>
+            <TabsTrigger value="tree">Árbol Filogenético</TabsTrigger>
+          </TabsList>
 
-        {viewMode === 'accordion' ? (
-          <>
+          <TabsContent value="accordion">
             {/* Header de órdenes */}
-            <div className="px-6 py-2 bg-gray-100 mb-4">
+            <div className="px-6 py-2 bg-gray-100 mb-4" style={{ backgroundColor: '#e8e8e8' }}>
               <div className="text-sm font-semibold text-gray-700">
                 Orden
               </div>
@@ -356,19 +287,22 @@ export default function FrogAccordion({ orders }: FrogAccordionProps) {
             <div className="space-y-4">
               {orders.map(renderOrder)}
             </div>
-          </>
-        ) : (
-          <PhylogeneticTree orders={orders} />
-        )}
+          </TabsContent>
+
+          <TabsContent value="tree">
+            <PhylogeneticTree orders={orders} />
+          </TabsContent>
+        </Tabs>
 
         {/* Botón flotante de Guía de Interpretación */}
-        <button
+        <Button
           onClick={() => setShowGuide(true)}
-          className="fixed bottom-8 right-8 p-4 bg-primary text-white rounded-full border-2 border-gray-800 hover:bg-gray-800 transition-all duration-200 hover:scale-110 z-40"
+          size="icon"
+          className="fixed bottom-8 right-8 h-16 w-16 rounded-full shadow-lg hover:scale-110 transition-transform z-40"
           title="Guía de Interpretación"
         >
           <QuestionMarkCircleIcon className="h-8 w-8" />
-        </button>
+        </Button>
       </main>
 
       {/* Modal de Guía de Interpretación */}
