@@ -98,7 +98,7 @@ export default function ClimaticFloorChart({ altitudinalRange }: ClimaticFloorCh
   return (
     <div className="flex flex-col items-center w-full">
       {/* Gráfico de pisos climáticos - Referencia geográfica */}
-      <div className="flex h-4 w-40 relative">
+      <div className="flex h-4 w-full max-w-40 relative">
         {allClimaticFloors.map((floor, index) => {
           const color = colorPalette[floor.colorIndex];
           const range = Math.abs(floor.max - floor.min);
@@ -124,14 +124,14 @@ export default function ClimaticFloorChart({ altitudinalRange }: ClimaticFloorCh
             style={{ 
               left: `${linePosition.left}%`,
               width: `${linePosition.width}%`,
-              bottom: '-6px' // Padding de 6px debajo de la barra de colores
+              bottom: '-4px' // Padding de 4px debajo de la barra de colores
             }}
           />
         ) : null}
       </div>
       
       {/* Rango altitudinal - Indica dónde está presente */}
-      <div className="text-xs text-gray-600 mt-3">
+      <div className="text-xs text-gray-600 mt-1">
         {altitudinalRange.min === 0 && altitudinalRange.max === 0 ? 
           'No presente' : 
           `${altitudinalRange.min}-${altitudinalRange.max}m`
