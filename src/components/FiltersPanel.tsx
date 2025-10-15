@@ -270,7 +270,32 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
             <AccordionTrigger>Provincia | Categórica</AccordionTrigger>
             <AccordionContent>
               <div className="flex flex-wrap gap-2">
-                {['Pichincha', 'Guayas', 'Azuay', 'Manabí', 'El Oro'].map((province) => {
+                {[
+                  'Azuay',
+                  'Bolívar',
+                  'Cañar',
+                  'Carchi',
+                  'Chimborazo',
+                  'Cotopaxi',
+                  'El Oro',
+                  'Esmeraldas',
+                  'Galápagos',
+                  'Guayas',
+                  'Imbabura',
+                  'Loja',
+                  'Los Ríos',
+                  'Manabí',
+                  'Morona Santiago',
+                  'Napo',
+                  'Orellana',
+                  'Pastaza',
+                  'Pichincha',
+                  'Santa Elena',
+                  'Santo Domingo de los Tsáchilas',
+                  'Sucumbíos',
+                  'Tungurahua',
+                  'Zamora Chinchipe'
+                ].map((province) => {
                   const value = province.toLowerCase().replace(' ', '-');
                   const isSelected = filters.provincia.includes(value);
                   return (
@@ -279,6 +304,7 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
                       variant={isSelected ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => handleCategoricalChange('provincia', value)}
+                      className="whitespace-nowrap text-xs px-2 py-1 h-auto min-h-[32px]"
                     >
                       {province}
                     </Button>
@@ -294,11 +320,13 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
             <AccordionContent>
               <div className="flex flex-wrap gap-2">
                 {[
-                  { value: 'LC', label: 'Preocupación Menor (LC)' },
-                  { value: 'NT', label: 'Casi Amenazada (NT)' },
+                  { value: 'PM', label: 'Preocupación Menor (PM)' },
+                  { value: 'CaA', label: 'Casi Amenazada (CaA)' },
                   { value: 'VU', label: 'Vulnerable (VU)' },
                   { value: 'EN', label: 'En Peligro (EN)' },
-                  { value: 'CR', label: 'En Peligro Crítico (CR)' }
+                  { value: 'CA', label: 'Críticamente Amenazada (CA)' },
+                  { value: 'CA-PE', label: 'Críticamente Amenazada(CA-PE)' },
+                  { value: 'DI', label: 'Datos Deficientes (DI)' }
                 ].map((status) => {
                   const isSelected = filters.listaRoja.includes(status.value);
                   return (
@@ -307,6 +335,7 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
                       variant={isSelected ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => handleCategoricalChange('listaRoja', status.value)}
+                      className="whitespace-nowrap text-xs px-2 py-1 h-auto min-h-[32px]"
                     >
                       {status.label}
                     </Button>
@@ -332,6 +361,7 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
                       variant={isSelected ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => handleCategoricalChange('endemismo', option.value)}
+                      className="whitespace-nowrap text-xs px-2 py-1 h-auto min-h-[32px]"
                     >
                       {option.label}
                     </Button>
@@ -347,12 +377,13 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
             <AccordionContent>
               <div className="flex flex-wrap gap-2">
                 {[
-                  { value: 'tropical', label: 'Tropical (0-1000m)' },
-                  { value: 'subtropical', label: 'Subtropical (1000-2000m)' },
-                  { value: 'templado', label: 'Templado (2000-3000m)' },
-                  { value: 'frio', label: 'Frío (3000-4000m)' },
-                  { value: 'paramo', label: 'Páramo (4000-5000m)' },
-                  { value: 'nival', label: 'Nival (5000-6000m)' }
+                  { value: 'tropical-occidental', label: 'Tropical Occidental (0-1000m)' },
+                  { value: 'subtropical-occidental', label: 'Subtropical Occidental (1001-2000m)' },
+                  { value: 'templado-occidental', label: 'Templado Occidental (2001-3000m)' },
+                  { value: 'altoandino', label: 'Altoandino (3001-4800m)' },
+                  { value: 'templado-oriental', label: 'Templado Oriental (2001-3000m)' },
+                  { value: 'subtropical-oriental', label: 'Subtropical Oriental (1001-2000m)' },
+                  { value: 'tropical-oriental', label: 'Tropical Oriental (0-1000m)' }
                 ].map((floor) => {
                   const isSelected = filters.pisosAltitudinales.includes(floor.value);
                   return (
@@ -361,6 +392,7 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
                       variant={isSelected ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => handleCategoricalChange('pisosAltitudinales', floor.value)}
+                      className="whitespace-nowrap text-xs px-2 py-1 h-auto min-h-[32px]"
                     >
                       {floor.label}
                     </Button>
@@ -388,6 +420,7 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
                       variant={isSelected ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => handleCategoricalChange('areaDistribucion', area.value)}
+                      className="whitespace-nowrap text-xs px-2 py-1 h-auto min-h-[32px]"
                     >
                       {area.label}
                     </Button>
@@ -416,6 +449,7 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
                       variant={isSelected ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => handleCategoricalChange('ecosistemas', ecosystem.value)}
+                      className="whitespace-nowrap text-xs px-2 py-1 h-auto min-h-[32px]"
                     >
                       {ecosystem.label}
                     </Button>
@@ -431,10 +465,21 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
             <AccordionContent>
               <div className="flex flex-wrap gap-2">
                 {[
-                  { value: 'costa', label: 'Costa' },
-                  { value: 'sierra', label: 'Sierra' },
-                  { value: 'oriente', label: 'Oriente' },
-                  { value: 'galapagos', label: 'Galápagos' }
+                  { value: 'cordilleras-amazonicas', label: 'Cordilleras Amazónicas' },
+                  { value: 'aguarico-putumayo-caqueta', label: 'Aguarico-Putumayo-Caquetá' },
+                  { value: 'catamayo-alamor', label: 'Catamayo-Alamor' },
+                  { value: 'cordillera-costera-choco', label: 'Cordillera Costera del Chocó' },
+                  { value: 'cordillera-costera-pacifico', label: 'Cordillera Costera del Pacífico Equatorial' },
+                  { value: 'cordillera-occidental-andes', label: 'Cordillera Occidental de los Andes' },
+                  { value: 'choco-ecuatorial', label: 'Chocó Ecuatorial' },
+                  { value: 'abanico-pastaza', label: 'Abanico del Pastaza' },
+                  { value: 'jama-zapotillo', label: 'Jama-Zapotillo' },
+                  { value: 'norte-cordillera-oriental', label: 'Norte de la Cordillera Oriental de los Andes' },
+                  { value: 'napo-curaray', label: 'Napo-Curaray' },
+                  { value: 'paramo', label: 'Páramo' },
+                  { value: 'sur-cordillera-oriental', label: 'Sur de la Cordillera Oriental de los Andes' },
+                  { value: 'tigre-pastaza', label: 'Tigre-Pastaza' },
+                  { value: 'valles', label: 'Valles' }
                 ].map((region) => {
                   const isSelected = filters.regionesBiogeograficas.includes(region.value);
                   return (
@@ -443,6 +488,7 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
                       variant={isSelected ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => handleCategoricalChange('regionesBiogeograficas', region.value)}
+                      className="whitespace-nowrap text-xs px-2 py-1 h-auto min-h-[32px]"
                     >
                       {region.label}
                     </Button>
@@ -468,6 +514,7 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
                       variant={isSelected ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => handleCategoricalChange('reservasBiosfera', option.value)}
+                      className="whitespace-nowrap text-xs px-2 py-1 h-auto min-h-[32px]"
                     >
                       {option.label}
                     </Button>
@@ -493,6 +540,7 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
                       variant={isSelected ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => handleCategoricalChange('bosquesProtegidos', option.value)}
+                      className="whitespace-nowrap text-xs px-2 py-1 h-auto min-h-[32px]"
                     >
                       {option.label}
                     </Button>
@@ -518,6 +566,7 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
                       variant={isSelected ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => handleCategoricalChange('areasProtegidas', option.value)}
+                      className="whitespace-nowrap text-xs px-2 py-1 h-auto min-h-[32px]"
                     >
                       {option.label}
                     </Button>

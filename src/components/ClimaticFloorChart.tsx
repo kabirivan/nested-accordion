@@ -14,26 +14,30 @@ export default function ClimaticFloorChart({ altitudinalRange }: ClimaticFloorCh
     '#D2B48C', // [1] Beige claro - Pie de monte/zona seca
     '#A0522D', // [2] Beige grisáceo - Sierra baja (más marrón)
     '#654321', // [3] Marrón - Sierra alta/andina (más oscuro)
-    '#D2B48C', // [4] Beige grisáceo - Vertiente oriental andina
-    '#90EE90'  // [5] Verde claro - Selva baja/Oriente (más brillante como en la imagen)
+    '#654321', // [4] Marrón - Sierra alta/andina (más oscuro)
+    '#A0522D', // [5] Beige grisáceo - Sierra baja (más marrón)
+    '#D2B48C', // [6] Beige grisáceo - Vertiente oriental andina
+    '#90EE90'  // [7] Verde claro - Selva baja/Oriente (más brillante como en la imagen)
   ];
   
   const allClimaticFloors = [
     { name: 'Tropical', min: 0, max: 1000, colorIndex: 0, region: 'Costa' },
     { name: 'Subtropical', min: 1000, max: 2000, colorIndex: 1, region: 'Pie de monte' },
     { name: 'Templado', min: 2000, max: 3000, colorIndex: 2, region: 'Sierra baja' },
-    { name: 'Frío', min: 3000, max: 4000, colorIndex: 3, region: 'Sierra alta' },
-    { name: 'Páramo', min: 4000, max: 5000, colorIndex: 4, region: 'Vertiente oriental' },
-    { name: 'Nival', min: 5000, max: 6000, colorIndex: 5, region: 'Oriente' }
+    { name: 'Frío', min: 3000, max: 4800, colorIndex: 3, region: 'Sierra alta' },
+    { name: 'Páramo', min: 4800, max: 3000, colorIndex: 4, region: 'Vertiente oriental' },
+    { name: 'Templado Oriental', min: 3000, max: 2000, colorIndex: 2, region: 'Sierra oriental' },
+    { name: 'Subtropical Oriental', min: 2000, max: 1000, colorIndex: 1, region: 'Pie de monte oriental' },
+    { name: 'Tropical Oriental', min: 1000, max: 0, colorIndex: 0, region: 'Oriente' }
   ];
 
   // Calcular la posición y ancho de la barra negra basado en el rango altitudinal
-  const maxAltitude = 6000; // Altitud máxima de la escala
+  const maxAltitude = 4800; // Altitud máxima de la escala (pico más alto)
   
   // Calcular porcentajes
   const startPercentage = (altitudinalRange.min / maxAltitude) * 100;
   const endPercentage = (altitudinalRange.max / maxAltitude) * 100;
-  const widthPercentage = endPercentage - startPercentage;
+  const widthPercentage = Math.abs(endPercentage - startPercentage);
 
   return (
     <div className="flex flex-col items-center w-full">
@@ -41,13 +45,16 @@ export default function ClimaticFloorChart({ altitudinalRange }: ClimaticFloorCh
       <div className="flex h-4 w-40 relative">
         {allClimaticFloors.map((floor, index) => {
           const color = colorPalette[floor.colorIndex];
+          const range = Math.abs(floor.max - floor.min);
+          const widthPercentage = (range / maxAltitude) * 100;
           
           return (
             <div
               key={`${floor.name}-${index}`}
-              className="h-full flex-1"
+              className="h-full"
               style={{ 
-                backgroundColor: color
+                backgroundColor: color,
+                width: `${widthPercentage}%`
               }}
               title={`${floor.name} (${floor.min}-${floor.max}m) - ${floor.region}`}
             />

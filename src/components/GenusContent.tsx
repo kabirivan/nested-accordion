@@ -1,250 +1,253 @@
 'use client';
 
-import { useState } from 'react';
 import Link from 'next/link';
-import { DocumentTextIcon } from '@heroicons/react/24/outline';
 import { FrogGenus } from '@/data/frogsData';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import RedListStatus from './RedListStatus';
-import ClimaticFloorChart from './ClimaticFloorChart';
 
 interface GenusContentProps {
   readonly genus: FrogGenus;
 }
 
-type TabType = 'general' | 'species';
-
 export default function GenusContent({ genus }: GenusContentProps) {
-  const [activeTab, setActiveTab] = useState<TabType>('general');
-
-  const renderGeneralTab = () => (
-    <div className="space-y-6">
-      {/* Estadísticas */}
-      <section>
-        <h3 className="text-lg font-semibold text-primary mb-3">Estadísticas</h3>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-            <p className="text-3xl font-bold text-primary">{genus.summary.totalSpecies}</p>
-            <p className="text-secondary text-sm">Especies</p>
-          </div>
-          <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-            <p className="text-3xl font-bold text-primary">{genus.summary.endemicSpecies}</p>
-            <p className="text-secondary text-sm">Endémicas</p>
-          </div>
-          <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-            <p className="text-3xl font-bold text-primary">{genus.summary.redListSpecies}</p>
-            <p className="text-secondary text-sm">Lista Roja</p>
-          </div>
-        </div>
-      </section>
-
-      {/* Etymology */}
-      {genus.etymology && (
-        <section>
-          <h3 className="text-lg font-semibold text-primary mb-2">Etymology</h3>
-          <p className="text-secondary leading-relaxed">{genus.etymology}</p>
-        </section>
-      )}
-
-      {/* Definition */}
-      {genus.definition && (
-        <section>
-          <h3 className="text-lg font-semibold text-primary mb-2">Definition</h3>
-          <p className="text-secondary leading-relaxed">{genus.definition}</p>
-        </section>
-      )}
-
-      {/* Distribution */}
-      {genus.distribution && (
-        <section>
-          <h3 className="text-lg font-semibold text-primary mb-2">Distribution</h3>
-          <p className="text-secondary leading-relaxed">{genus.distribution}</p>
-        </section>
-      )}
-
-      {/* Content */}
-      {genus.content && (
-        <section>
-          <h3 className="text-lg font-semibold text-primary mb-2">Content</h3>
-          <p className="text-secondary leading-relaxed">{genus.content}</p>
-        </section>
-      )}
-
-      {/* Remarks */}
-      {genus.remarks && (
-        <section>
-          <h3 className="text-lg font-semibold text-primary mb-2">Remarks</h3>
-          <p className="text-secondary leading-relaxed">{genus.remarks}</p>
-        </section>
-      )}
-    </div>
-  );
-
-  const renderSpeciesTab = () => (
-    <div className="space-y-3">
-      {/* Header de la tabla */}
-      <div className="px-4 py-2 bg-gray-100 border border-gray-200 rounded-lg">
-        <div className="flex items-center gap-4 text-xs font-semibold text-tertiary">
-          <div className="flex-1">Especie</div>
-          <div className="w-8 text-center">En</div>
-          <div className="w-12 text-center">LR</div>
-          <div className="w-20 text-center">Distribución</div>
-          <div className="w-10 text-center">Ficha</div>
-        </div>
-      </div>
-
-      {/* Lista de especies */}
-      <div className="border border-gray-200 rounded-lg overflow-hidden">
-        {genus.species.map((species) => (
-          <div
-            key={species.id}
-            className="px-4 py-3 border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition-colors"
-          >
-            <div className="flex items-center gap-4">
-              {/* Nombre científico */}
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2">
-                  <span className="text-primary font-medium text-sm italic">
-                    {species.scientificName}
-                  </span>
-                  <span className="text-tertiary text-xs">
-                    {species.discoverers} ({species.discoveryYear})
-                  </span>
-                </div>
-                <div className="text-secondary text-xs mt-1">
-                  {species.commonName}
-                </div>
-              </div>
-
-              {/* Endémica */}
-              <div className="w-8 text-center">
-                {species.isEndemic ? (
-                  <span className="text-black text-lg">✓</span>
-                ) : (
-                  <span className="text-tertiary text-lg">-</span>
-                )}
-              </div>
-
-              {/* Lista Roja */}
-              <div className="w-12 text-center">
-                <RedListStatus status={species.redListStatus} />
-              </div>
-
-              {/* Pisos Climáticos */}
-              <div className="w-20">
-                <ClimaticFloorChart
-                  altitudinalRange={species.altitudinalRange}
-                  climaticFloors={species.climaticFloors}
-                />
-              </div>
-
-              {/* Botón para ver tarjeta técnica */}
-              <div>
-                <Link
-                  href={`/species/${species.id}`}
-                  className="p-2 hover:bg-gray-200 rounded-lg transition-colors group block"
-                  title="Ver ficha técnica"
-                >
-                  <DocumentTextIcon className="h-5 w-5 text-gray-600 group-hover:text-primary" />
-                </Link>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-
   return (
-    <div className="bg-white rounded-lg border border-gray-200 flex flex-col h-[calc(100vh-200px)]">
-      {/* Header - Fijo */}
-      <div className="border-b border-gray-200 px-6 py-6 flex-shrink-0">
-        {/* Información principal */}
-        <div className="mb-4">
-          <h1 className="text-4xl font-bold text-primary mb-2 italic">{genus.name}</h1>
-          <p className="text-xl text-secondary">{genus.commonName}</p>
-        </div>
-
-        {/* Pestañas */}
-        <div className="flex gap-2 border-b border-gray-200 -mb-px">
-          <button
-            onClick={() => setActiveTab('general')}
-            className={`px-4 py-2 font-medium transition-colors border-b-2 ${
-              activeTab === 'general'
-                ? 'border-primary text-primary'
-                : 'border-transparent text-secondary hover:text-primary'
-            }`}
-          >
-            General
-          </button>
-          <button
-            onClick={() => setActiveTab('species')}
-            className={`px-4 py-2 font-medium transition-colors border-b-2 ${
-              activeTab === 'species'
-                ? 'border-primary text-primary'
-                : 'border-transparent text-secondary hover:text-primary'
-            }`}
-          >
-            Especies
-          </button>
-        </div>
-      </div>
-
-      {/* Contenido con sidebar - Con scroll */}
-      <div className="flex-1 overflow-hidden">
-        <div className="h-full overflow-y-auto px-6 py-6">
-          <div className="flex gap-8">
-            {/* Contenido principal */}
-            <div className="flex-1 min-w-0">
-              {activeTab === 'general' && renderGeneralTab()}
-              {activeTab === 'species' && renderSpeciesTab()}
+    <div className="min-h-screen bg-[#f5f5f5] font-serif">
+      {/* Encabezado - Fondo oscuro */}
+      <header className="bg-[#2c2c2c] text-white py-8">
+        <div className="max-w-7xl mx-auto px-6">
+          {/* Nombre del género */}
+          <h1 className="text-4xl font-normal italic text-center mb-2" style={{ fontFamily: 'Georgia, Times New Roman, serif' }}>
+            {genus.name}
+          </h1>
+          
+          {/* Primeros Recolectores */}
+          <p className="text-sm text-[#ccc] text-center mb-2" style={{ fontFamily: 'Georgia, Times New Roman, serif' }}>
+            Primeros Recolectores: Autor, Año
+          </p>
+          
+          {/* Nombre Común */}
+          <p className="text-lg text-white text-center mb-4" style={{ fontFamily: 'Georgia, Times New Roman, serif' }}>
+            {genus.commonName}
+          </p>
+          
+          {/* Línea separadora */}
+          <div className="border-t border-[#555] mb-6"></div>
+          
+          {/* Taxonomía en tres columnas */}
+          <div className="grid grid-cols-3 gap-8 mb-6">
+            <div className="text-center">
+              <p className="text-xs text-[#ccc] uppercase mb-1" style={{ fontFamily: 'Georgia, Times New Roman, serif' }}>
+                ORDEN
+              </p>
+              <p className="text-lg text-white italic" style={{ fontFamily: 'Georgia, Times New Roman, serif' }}>
+                Anura
+              </p>
+            </div>
+            <div className="text-center">
+              <p className="text-xs text-[#ccc] uppercase mb-1" style={{ fontFamily: 'Georgia, Times New Roman, serif' }}>
+                FAMILIA
+              </p>
+              <p className="text-lg text-white italic" style={{ fontFamily: 'Georgia, Times New Roman, serif' }}>
+                Familia
+              </p>
             </div>
 
-            {/* Cuadro resumen lateral (estilo Wikipedia) */}
-            {activeTab === 'general' && (
-              <aside className="w-80 flex-shrink-0 ml-4">
-              <div className="sticky top-4 border border-gray-300 rounded-lg overflow-hidden bg-gray-50">
-                {/* Imagen */}
-                {genus.imageUrl ? (
-                  <div className="aspect-square bg-gray-200 overflow-hidden">
-                    <img
-                      src={genus.imageUrl}
-                      alt={genus.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                ) : (
-                  <div className="aspect-square bg-gray-200 flex items-center justify-center">
-                    <span className="text-gray-400 text-sm">Sin imagen</span>
-                  </div>
-                )}
+          </div>
+          
+          {/* Número de especies */}
+          <div className="py-3 px-4 text-center">
+            <span className="text-sm text-[#ccc]" style={{ fontFamily: 'Georgia, Times New Roman, serif' }}>
+              Número de especies: <span className="font-bold text-white">{genus.summary.totalSpecies}</span>
+            </span>
+          </div>
+        </div>
+      </header>
 
-                {/* Información de resumen */}
-                <div className="p-4 space-y-3">
-                  <div>
-                    <h3 className="text-lg font-bold text-primary italic mb-1">
-                      {genus.name}
-                    </h3>
-                    <p className="text-sm text-secondary">{genus.commonName}</p>
-                  </div>
-
-                  <div className="border-t border-gray-300 pt-3 space-y-2">
-                    <div>
-                      <p className="text-xs font-semibold text-tertiary">Estadísticas</p>
-                      <div className="text-sm text-secondary mt-1 space-y-0.5">
-                        <p><span className="font-medium">Especies:</span> {genus.summary.totalSpecies}</p>
-                        <p><span className="font-medium">Endémicas:</span> {genus.summary.endemicSpecies}</p>
-                        <p><span className="font-medium">Lista Roja:</span> {genus.summary.redListSpecies}</p>
-                      </div>
-                    </div>
-                  </div>
+      {/* Cuerpo principal */}
+      <main className="max-w-7xl mx-auto px-6 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Columna izquierda - Contenido principal */}
+          <div className="lg:col-span-2 space-y-6">
+            
+            {/* Etimología */}
+            {genus.etymology && (
+              <div className="bg-white border border-[#ddd]">
+                <div className="bg-[#e8e8e8] border-b border-[#ddd] px-4 py-3">
+                  <h3 className="text-sm font-semibold uppercase tracking-wide text-[#333]" style={{ fontFamily: 'Georgia, Times New Roman, serif' }}>
+                    ETIMOLOGÍA
+                  </h3>
+                </div>
+                <div className="p-4">
+                  <p className="text-[#444] leading-relaxed" style={{ fontFamily: 'Georgia, Times New Roman, serif' }}>
+                    {genus.etymology}
+                  </p>
                 </div>
               </div>
-              </aside>
+            )}
+
+            {/* Definición */}
+            {genus.definition && (
+              <Card className="bg-white border border-[#ddd]">
+                <CardHeader className="bg-[#e8e8e8] border-b border-[#ddd]">
+                  <CardTitle className="text-sm font-semibold uppercase tracking-wide text-[#333]">
+                    Definición
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="pt-4">
+                  <p className="text-[#444] leading-relaxed">{genus.definition}</p>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Distribución */}
+            {genus.distribution && (
+              <Card className="bg-white border border-[#ddd]">
+                <CardHeader className="bg-[#e8e8e8] border-b border-[#ddd]">
+                  <CardTitle className="text-sm font-semibold uppercase tracking-wide text-[#333]">
+                    Distribución
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="pt-4">
+                  <p className="text-[#444] leading-relaxed">{genus.distribution}</p>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Contenido */}
+            {genus.content && (
+              <Card className="bg-white border border-[#ddd]">
+                <CardHeader className="bg-[#e8e8e8] border-b border-[#ddd]">
+                  <CardTitle className="text-sm font-semibold uppercase tracking-wide text-[#333]">
+                    Contenido
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="pt-4">
+                  <p className="text-[#444] leading-relaxed">{genus.content}</p>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Especies */}
+            <Card className="bg-white border border-[#ddd]">
+              <CardHeader className="bg-[#e8e8e8] border-b border-[#ddd]">
+                <CardTitle className="text-sm font-semibold uppercase tracking-wide text-[#333]">
+                  Especies
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="pt-4">
+                <div className="space-y-2">
+                  {genus.species.map((species) => (
+                    <div
+                      key={species.id}
+                      className="bg-[#f9f9f9] border-l-4 border-[#666] p-3 pl-4 hover:bg-[#f0f0f0] hover:border-[#333] transition-colors cursor-pointer"
+                      style={{ listStyle: 'none' }}
+                    >
+                      <Link href={`/species/${species.id}`} className="block">
+                        <div className="flex items-center justify-between">
+                          <div className="flex-1">
+                            <p className="text-[#333] italic font-medium text-sm">
+                              {species.scientificName}
+                            </p>
+                            <p className="text-[#666] text-xs mt-1">
+                              {species.commonName}
+                            </p>
+                          </div>
+                          <div className="flex items-center gap-3">
+                            {species.isEndemic && (
+                              <span className="text-xs bg-[#e8e8e8] px-2 py-1 rounded text-[#333]">
+                                Endémica
+                              </span>
+                            )}
+                            <RedListStatus status={species.redListStatus} />
+                          </div>
+                        </div>
+                      </Link>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Observaciones */}
+            {genus.remarks && (
+              <Card className="bg-white border border-[#ddd]">
+                <CardHeader className="bg-[#e8e8e8] border-b border-[#ddd]">
+                  <CardTitle className="text-sm font-semibold uppercase tracking-wide text-[#333]">
+                    Observaciones
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="pt-4">
+                  <p className="text-[#444] leading-relaxed">{genus.remarks}</p>
+                </CardContent>
+              </Card>
             )}
           </div>
+
+          {/* Columna derecha - Sidebar */}
+          <div className="space-y-6">
+            
+            {/* Recursos */}
+            <Card className="bg-white border border-[#ddd]">
+              <CardHeader className="bg-[#e8e8e8] border-b border-[#ddd]">
+                <CardTitle className="text-sm font-semibold uppercase tracking-wide text-[#333]">
+                  Recursos
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="pt-4 space-y-3">
+                <div className="bg-[#fafafa] p-3 rounded border border-[#ddd] hover:bg-[#f0f0f0] transition-colors cursor-pointer">
+                  <p className="text-sm text-[#333] font-medium">Fotos</p>
+                  <p className="text-xs text-[#666]">Galería de imágenes</p>
+                </div>
+                <div className="bg-[#fafafa] p-3 rounded border border-[#ddd] hover:bg-[#f0f0f0] transition-colors cursor-pointer">
+                  <p className="text-sm text-[#333] font-medium">Mapa</p>
+                  <p className="text-xs text-[#666]">Distribución geográfica</p>
+                </div>
+                <div className="bg-[#fafafa] p-3 rounded border border-[#ddd] hover:bg-[#f0f0f0] transition-colors cursor-pointer">
+                  <p className="text-sm text-[#333] font-medium">Filogenia</p>
+                  <p className="text-xs text-[#666]">Árbol filogenético</p>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Fuentes Externas */}
+            <Card className="bg-white border border-[#ddd]">
+              <CardHeader className="bg-[#e8e8e8] border-b border-[#ddd]">
+                <CardTitle className="text-sm font-semibold uppercase tracking-wide text-[#333]">
+                  Fuentes Externas
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="pt-4">
+                <div className="grid grid-cols-3 gap-3">
+                  <div className="text-center p-2 hover:bg-[#f0f0f0] rounded transition-colors cursor-pointer">
+                    <div className="text-lg text-[#333] mb-1">●</div>
+                    <p className="text-xs text-[#666]">ASW</p>
+                  </div>
+                  <div className="text-center p-2 hover:bg-[#f0f0f0] rounded transition-colors cursor-pointer">
+                    <div className="text-lg text-[#333] mb-1">◆</div>
+                    <p className="text-xs text-[#666]">AmphibiaWeb</p>
+                  </div>
+                  <div className="text-center p-2 hover:bg-[#f0f0f0] rounded transition-colors cursor-pointer">
+                    <div className="text-lg text-[#333] mb-1">■</div>
+                    <p className="text-xs text-[#666]">NCBI</p>
+                  </div>
+                  <div className="text-center p-2 hover:bg-[#f0f0f0] rounded transition-colors cursor-pointer">
+                    <div className="text-lg text-[#333] mb-1">▲</div>
+                    <p className="text-xs text-[#666]">VertNet</p>
+                  </div>
+                  <div className="text-center p-2 hover:bg-[#f0f0f0] rounded transition-colors cursor-pointer">
+                    <div className="text-lg text-[#333] mb-1">★</div>
+                    <p className="text-xs text-[#666]">iNaturalist</p>
+                  </div>
+                  <div className="text-center p-2 hover:bg-[#f0f0f0] rounded transition-colors cursor-pointer">
+                    <div className="text-lg text-[#333] mb-1">◈</div>
+                    <p className="text-xs text-[#666]">Wikipedia</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 }
-
