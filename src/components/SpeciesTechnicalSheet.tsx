@@ -45,24 +45,24 @@ export default function SpeciesTechnicalSheet({
       {/* Encabezado */}
       <CardHeader className="text-white text-center sticky top-0 z-30" style={{ padding: '30px', backgroundColor: '#2c2c2c' }}>
         <div className="space-y-4">
-          <h1 className="text-3xl font-bold italic" style={{ fontFamily: 'Georgia, "Times New Roman", serif', letterSpacing: '2px' }}>
+          <h1 className="text-3xl font-bold italic" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif', letterSpacing: '2px' }}>
             {scientificName}
           </h1>
-          <p className="text-sm" style={{ fontFamily: 'Georgia, "Times New Roman", serif', color: '#cccccc' }}>
+          <p className="text-sm" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif', color: '#cccccc' }}>
             {collectors}
           </p>
-          <p className="text-xl font-semibold" style={{ fontFamily: 'Georgia, "Times New Roman", serif', color: '#e0e0e0' }}>
+          <p className="text-xl font-semibold" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif', color: '#e0e0e0' }}>
             {commonName}
           </p>
           <div className="my-4" style={{ borderTop: '1px solid #555555' }} />
           {/* Etiquetas de taxonomía */}
-          <div className="flex items-center justify-center gap-16 text-xs" style={{ color: '#999999', letterSpacing: '2px', textTransform: 'uppercase', fontFamily: 'Georgia, "Times New Roman", serif' }}>
+          <div className="flex items-center justify-center gap-16 text-xs" style={{ color: '#999999', letterSpacing: '2px', textTransform: 'uppercase', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif' }}>
             <span>Orden</span>
             <span>Familia</span>
             <span>Género</span>
           </div>
           {/* Valores de taxonomía */}
-          <div className="flex items-center justify-center gap-16" style={{ color: '#e0e0e0', fontStyle: 'italic', fontFamily: 'Georgia, "Times New Roman", serif' }}>
+          <div className="flex items-center justify-center gap-16" style={{ color: '#e0e0e0', fontStyle: 'italic', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif' }}>
             <span>{order}</span>
             <span>{family}</span>
             <span>{genus}</span>
@@ -86,13 +86,13 @@ export default function SpeciesTechnicalSheet({
                   padding: '8px 12px',
                   textTransform: 'uppercase',
                   letterSpacing: '2px',
-                  fontFamily: 'Georgia, "Times New Roman", serif',
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif',
                   fontWeight: 'bold'
                 }}>
                   Etimología
                 </h3>
                   <div className="text-justify" style={{
-                    fontFamily: 'Georgia, "Times New Roman", serif',
+                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif',
                     color: '#444444',
                     fontSize: '15px',
                     lineHeight: '1.6'
@@ -111,13 +111,13 @@ export default function SpeciesTechnicalSheet({
                   padding: '8px 12px',
                   textTransform: 'uppercase',
                   letterSpacing: '2px',
-                  fontFamily: 'Georgia, "Times New Roman", serif',
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif',
                   fontWeight: 'bold'
                 }}>
                   Identificación
                 </h3>
                   <div className="text-justify" style={{
-                    fontFamily: 'Georgia, "Times New Roman", serif',
+                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif',
                     color: '#444444',
                     fontSize: '15px',
                     lineHeight: '1.6'
@@ -136,13 +136,13 @@ export default function SpeciesTechnicalSheet({
                   padding: '8px 12px',
                   textTransform: 'uppercase',
                   letterSpacing: '2px',
-                  fontFamily: 'Georgia, "Times New Roman", serif',
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif',
                   fontWeight: 'bold'
                 }}>
                   Comparaciones
                 </h3>
                   <div className="text-justify" style={{
-                    fontFamily: 'Georgia, "Times New Roman", serif',
+                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif',
                     color: '#444444',
                     fontSize: '15px',
                     lineHeight: '1.6'
@@ -161,13 +161,13 @@ export default function SpeciesTechnicalSheet({
                   padding: '8px 12px',
                   textTransform: 'uppercase',
                   letterSpacing: '2px',
-                  fontFamily: 'Georgia, "Times New Roman", serif',
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif',
                   fontWeight: 'bold'
                 }}>
                   Historia natural
                 </h3>
                   <div className="text-justify" style={{
-                    fontFamily: 'Georgia, "Times New Roman", serif',
+                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif',
                     color: '#444444',
                     fontSize: '15px',
                     lineHeight: '1.6'
@@ -186,13 +186,13 @@ export default function SpeciesTechnicalSheet({
                   padding: '8px 12px',
                   textTransform: 'uppercase',
                   letterSpacing: '2px',
-                  fontFamily: 'Georgia, "Times New Roman", serif',
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif',
                   fontWeight: 'bold'
                 }}>
                   Distribución
                 </h3>
                   <div className="text-justify" style={{
-                    fontFamily: 'Georgia, "Times New Roman", serif',
+                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif',
                     color: '#444444',
                     fontSize: '15px',
                     lineHeight: '1.6'
@@ -211,13 +211,13 @@ export default function SpeciesTechnicalSheet({
                   padding: '8px 12px',
                   textTransform: 'uppercase',
                   letterSpacing: '2px',
-                  fontFamily: 'Georgia, "Times New Roman", serif',
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif',
                   fontWeight: 'bold'
                 }}>
                   Conservación
                 </h3>
                   <div className="text-justify" style={{
-                    fontFamily: 'Georgia, "Times New Roman", serif',
+                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif',
                     color: '#444444',
                     fontSize: '15px',
                     lineHeight: '1.6'
@@ -230,13 +230,13 @@ export default function SpeciesTechnicalSheet({
           </div>
 
           {/* Columna derecha - Sidebar fijo */}
-          <div className="w-80 border-l sticky top-0 h-screen overflow-hidden" style={{ backgroundColor: '#fafafa' }}>
+          <div className="w-80 border-l sticky top-0 h-screen overflow-y-auto" style={{ backgroundColor: '#fafafa' }}>
             <div style={{ padding: '25px 30px' }} className="space-y-8">
               {/* Barra de pisos climáticos */}
               {altitudinalRange && climaticFloors && (
                 <section>
                   <h3 className="mb-4" style={{
-                    fontFamily: 'Georgia, "Times New Roman", serif',
+                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif',
                     color: '#333333',
                     fontSize: '18px',
                     fontWeight: 'bold'
@@ -253,7 +253,7 @@ export default function SpeciesTechnicalSheet({
               {/* Recursos */}
               <section>
                 <h3 className="mb-6" style={{
-                  fontFamily: 'Georgia, "Times New Roman", serif',
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif',
                   color: '#333333',
                   fontSize: '18px',
                   fontWeight: 'bold'
@@ -302,81 +302,93 @@ export default function SpeciesTechnicalSheet({
               {/* Fuentes Externas */}
               <section>
                 <h3 className="mb-6" style={{
-                  fontFamily: 'Georgia, "Times New Roman", serif',
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif',
                   color: '#333333',
                   fontSize: '18px',
                   fontWeight: 'bold'
                 }}>
                   Fuentes externas
                 </h3>
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-2 gap-2">
                   <a
                     href="#"
-                    className="flex flex-col items-center gap-3 p-4 rounded-lg transition-colors text-center hover:bg-gray-25"
+                    className="block p-2 rounded-lg transition-all duration-300 hover:bg-gray-50 group border"
                     style={{
                       backgroundColor: '#f9f9f9',
                       borderColor: '#dddddd'
                     }}
                   >
-                    <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ backgroundColor: '#333333' }}>
-                      <span className="text-white text-sm font-bold">●</span>
-                    </div>
-                    <span className="text-xs font-medium" style={{ color: '#333333' }}>ASW</span>
+                    <img 
+                      src="/assets/references/wikipedia.png" 
+                      alt="ASW Logo" 
+                      className="mx-auto transition-all duration-300 grayscale group-hover:grayscale-0 group-hover:scale-110"
+                      style={{ width: '100%', height: 'auto' }}
+                    />
                   </a>
 
                   <a
                     href="#"
-                    className="flex flex-col items-center gap-3 p-4 rounded-lg transition-colors text-center hover:bg-gray-25"
+                    className="block p-2 rounded-lg transition-all duration-300 hover:bg-gray-50 group border"
                     style={{ backgroundColor: '#f9f9f9', borderColor: '#dddddd' }}
                   >
-                    <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ backgroundColor: '#333333' }}>
-                      <span className="text-white text-sm font-bold">◆</span>
-                    </div>
-                    <span className="text-xs font-medium" style={{ color: '#333333' }}>AmphibiaWeb</span>
+                    <img 
+                      src="/assets/references/amphibiaweb.png" 
+                      alt="AmphibiaWeb Logo" 
+                      className="mx-auto transition-all duration-300 grayscale group-hover:grayscale-0 group-hover:scale-110"
+                      style={{ width: '100%', height: 'auto' }}
+                    />
                   </a>
 
                   <a
                     href="#"
-                    className="flex flex-col items-center gap-3 p-4 rounded-lg transition-colors text-center hover:bg-gray-25"
+                    className="block p-2 rounded-lg transition-all duration-300 hover:bg-gray-50 group border"
                     style={{ backgroundColor: '#f9f9f9', borderColor: '#dddddd' }}
                   >
-                    <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ backgroundColor: '#333333' }}>
-                      <span className="text-white text-sm font-bold">■</span>
-                    </div>
-                    <span className="text-xs font-medium" style={{ color: '#333333' }}>NCBI</span>
+                    <img 
+                      src="/assets/references/ncbi.png" 
+                      alt="NCBI Logo" 
+                      className="mx-auto transition-all duration-300 grayscale group-hover:grayscale-0 group-hover:scale-110"
+                      style={{ width: '100%', height: 'auto' }}
+                    />
                   </a>
 
                   <a
                     href="#"
-                    className="flex flex-col items-center gap-3 p-4 rounded-lg transition-colors text-center hover:bg-gray-25"
+                    className="block p-2 rounded-lg transition-all duration-300 hover:bg-gray-50 group border"
                     style={{ backgroundColor: '#f9f9f9', borderColor: '#dddddd' }}
                   >
-                    <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ backgroundColor: '#333333' }}>
-                      <span className="text-white text-sm font-bold">▲</span>
-                    </div>
-                    <span className="text-xs font-medium" style={{ color: '#333333' }}>VertNet</span>
+                    <img 
+                      src="/assets/references/vertnet.png" 
+                      alt="VertNet Logo" 
+                      className="mx-auto transition-all duration-300 grayscale group-hover:grayscale-0 group-hover:scale-110"
+                      style={{ width: '100%', height: 'auto' }}
+                    />
                   </a>
 
                   <a
                     href="#"
-                    className="flex flex-col items-center gap-3 p-4 rounded-lg transition-colors text-center hover:bg-gray-25"
+                    className="block p-2 rounded-lg transition-all duration-300 hover:bg-gray-50 group border"
                     style={{ backgroundColor: '#f9f9f9', borderColor: '#dddddd' }}
                   >
-                    <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ backgroundColor: '#333333' }}>
-                      <span className="text-white text-sm font-bold">★</span>
-                    </div>
-                    <span className="text-xs font-medium" style={{ color: '#333333' }}>iNaturalist</span>
+                    <img 
+                      src="/assets/references/iNaturalist.png" 
+                      alt="iNaturalist Logo" 
+                      className="mx-auto transition-all duration-300 grayscale group-hover:grayscale-0 group-hover:scale-110"
+                      style={{ width: '100%', height: 'auto' }}
+                    />
                   </a>
 
                   <a
                     href="#"
-                    className="flex flex-col items-center gap-3 p-4 rounded-lg transition-colors text-center hover:bg-gray-25"
+                    className="block p-2 rounded-lg transition-all duration-300 hover:bg-gray-50 group border"
                     style={{ backgroundColor: '#f9f9f9', borderColor: '#dddddd' }}
                   >
-                    <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ backgroundColor: '#333333' }}>
-                      <span className="text-white text-sm font-bold">◉</span>
-                    </div>
-                    <span className="text-xs font-medium" style={{ color: '#333333' }}>IUCN</span>
+                    <img 
+                      src="/assets/references/redlist.png" 
+                      alt="IUCN Logo" 
+                      className="mx-auto transition-all duration-300 grayscale group-hover:grayscale-0 group-hover:scale-110"
+                      style={{ width: '100%', height: 'auto' }}
+                    />
                   </a>
                 </div>
               </section>
