@@ -10,14 +10,14 @@ export default function ClimaticFloorChart({ altitudinalRange }: ClimaticFloorCh
   // Colores representando Costa → Sierra → Oriente (Ecuador)
   // Verde claro → Beige claro → Beige grisáceo → Marrón → Beige grisáceo → Verde claro
   const colorPalette = [
-    '#90EE90', // [0] Verde claro - Costa (más brillante como en la imagen)
-    '#D2B48C', // [1] Beige claro - Pie de monte/zona seca
-    '#A0522D', // [2] Beige grisáceo - Sierra baja (más marrón)
-    '#654321', // [3] Marrón - Sierra alta/andina (más oscuro)
-    '#654321', // [4] Marrón - Sierra alta/andina (más oscuro)
-    '#A0522D', // [5] Beige grisáceo - Sierra baja (más marrón)
-    '#D2B48C', // [6] Beige grisáceo - Vertiente oriental andina
-    '#90EE90'  // [7] Verde claro - Selva baja/Oriente (más brillante como en la imagen)
+    '#C5D86D', // [0] Verde claro - Costa (más brillante como en la imagen)
+    '#C8C4A4', // [1] Beige claro - Pie de monte/zona seca
+    '#9B9764', // [2] Beige grisáceo - Sierra baja (más marrón)
+    '#7D7645', // [3] Marrón - Sierra alta/andina (más oscuro)
+    '#7D7645', // [4] Marrón - Sierra alta/andina (más oscuro)
+    '#9B9764', // [5] Beige grisáceo - Sierra baja (más marrón)
+    '#C8C4A4', // [6] Beige grisáceo - Vertiente oriental andina
+    '#C5D86D'  // [7] Verde claro - Selva baja/Oriente (más brillante como en la imagen)
   ];
   
   const allClimaticFloors = [
@@ -32,12 +32,68 @@ export default function ClimaticFloorChart({ altitudinalRange }: ClimaticFloorCh
   ];
 
   // Calcular la posición y ancho de la barra negra basado en el rango altitudinal
-  const maxAltitude = 4800; // Altitud máxima de la escala (pico más alto)
+  // Cada franja representa 1000m excepto el piso Frío (1800m) y Páramo (1800m)
+  const totalAltitudeRange = 1000 + 1000 + 1000 + 1800 + 1800 + 1000 + 1000 + 1000; // = 9600m total
   
-  // Calcular porcentajes
-  const startPercentage = (altitudinalRange.min / maxAltitude) * 100;
-  const endPercentage = (altitudinalRange.max / maxAltitude) * 100;
-  const widthPercentage = Math.abs(endPercentage - startPercentage);
+  // Calcular la posición de la línea negra basada en la distribución real de las franjas
+  const calculateLinePosition = () => {
+    if (altitudinalRange.min === 0 && altitudinalRange.max === 0) {
+      return { left: 0, width: 0 };
+    }
+
+    // Calcular el ancho total de todas las franjas
+    const totalWidth = allClimaticFloors.reduce((sum, floor) => {
+      const range = Math.abs(floor.max - floor.min);
+      return sum + (range / totalAltitudeRange) * 100;
+    }, 0);
+
+    // Convertir altitud a posición porcentual en la barra completa
+    const altitudeToPosition = (altitude: number) => {
+      let cumulativeWidth = 0;
+      
+      console.log(`\n=== Calculando posición para altitud ${altitude}m ===`);
+      
+      for (const floor of allClimaticFloors) {
+        const floorMin = Math.min(floor.min, floor.max);
+        const floorMax = Math.max(floor.min, floor.max);
+        const range = Math.abs(floor.max - floor.min);
+        const floorWidthPercentage = (range / totalAltitudeRange) * 100;
+        
+        console.log(`Piso: ${floor.name} (${floorMin}-${floorMax}m), Ancho: ${floorWidthPercentage.toFixed(2)}%, Acumulado: ${cumulativeWidth.toFixed(2)}%`);
+        
+        if (altitude >= floorMin && altitude <= floorMax) {
+          const positionWithinFloor = (altitude - floorMin) / (floorMax - floorMin);
+          const finalPosition = cumulativeWidth + (positionWithinFloor * floorWidthPercentage);
+          console.log(`✓ Altitud ${altitude}m está en piso ${floor.name}`);
+          console.log(`  Posición dentro del piso: ${(positionWithinFloor * 100).toFixed(2)}%`);
+          console.log(`  Posición final: ${finalPosition.toFixed(2)}%`);
+          return finalPosition;
+        }
+        
+        cumulativeWidth += floorWidthPercentage;
+      }
+      
+      console.log(`⚠ Altitud ${altitude}m no encontrada, usando ancho total: ${cumulativeWidth.toFixed(2)}%`);
+      return cumulativeWidth; // Si no se encuentra, devolver el ancho total
+    };
+
+    const startPosition = altitudeToPosition(altitudinalRange.min);
+    const endPosition = altitudeToPosition(altitudinalRange.max);
+    
+    console.log(`\n=== RESULTADO FINAL ===`);
+    console.log(`Rango: ${altitudinalRange.min}-${altitudinalRange.max}m`);
+    console.log(`Posición inicio: ${startPosition.toFixed(2)}%`);
+    console.log(`Posición fin: ${endPosition.toFixed(2)}%`);
+    console.log(`Ancho calculado: ${(endPosition - startPosition).toFixed(2)}%`);
+    console.log(`Ancho total disponible: ${totalWidth.toFixed(2)}%`);
+
+    return {
+      left: Math.max(0, startPosition),
+      width: Math.max(0, Math.min(endPosition - startPosition, totalWidth - startPosition))
+    };
+  };
+
+  const linePosition = calculateLinePosition();
 
   return (
     <div className="flex flex-col items-center w-full">
@@ -46,7 +102,7 @@ export default function ClimaticFloorChart({ altitudinalRange }: ClimaticFloorCh
         {allClimaticFloors.map((floor, index) => {
           const color = colorPalette[floor.colorIndex];
           const range = Math.abs(floor.max - floor.min);
-          const widthPercentage = (range / maxAltitude) * 100;
+          const widthPercentage = (range / totalAltitudeRange) * 100;
           
           return (
             <div
@@ -66,8 +122,8 @@ export default function ClimaticFloorChart({ altitudinalRange }: ClimaticFloorCh
           <div 
             className="absolute h-0.5 bg-black"
             style={{ 
-              left: `${startPercentage}%`,
-              width: `${widthPercentage}%`,
+              left: `${linePosition.left}%`,
+              width: `${linePosition.width}%`,
               bottom: '-6px' // Padding de 6px debajo de la barra de colores
             }}
           />
