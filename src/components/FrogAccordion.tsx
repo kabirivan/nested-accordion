@@ -259,7 +259,7 @@ export default function FrogAccordion({ orders }: FrogAccordionProps) {
   return (
     <div className="flex gap-3">
       {/* Panel izquierdo - Filtros */}
-      <aside className="hidden 2xl:block w-80 flex-shrink-0">
+      <aside className="hidden 2xl:block w-[20%] flex-shrink-0">
         <FiltersPanel onFiltersChange={setFilters} />
         {Object.keys(filters).length > 0 && (
           <div className="mt-2 text-sm text-gray-600">
@@ -269,7 +269,7 @@ export default function FrogAccordion({ orders }: FrogAccordionProps) {
       </aside>
 
       {/* Contenido central - Acordeón o Árbol */}
-      <main className="flex-1 min-w-0 relative">
+      <main className="w-[80%] min-w-0 relative">
         <Tabs defaultValue="accordion" className="w-full">
           <TabsList className="mb-4">
             <TabsTrigger value="accordion">Acordeón</TabsTrigger>

@@ -41,28 +41,28 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
   const [open, setOpen] = useState(false);
-  
+
   const [filters, setFilters] = useState({
     // Filtros categóricos (ahora arrays para múltiple selección)
     provincia: [] as string[],
     listaRoja: [] as string[],
     endemismo: [] as string[],
     pisosAltitudinales: [] as string[],
-    areaDistribucion: [] as string[],
     ecosistemas: [] as string[],
     regionesBiogeograficas: [] as string[],
     reservasBiosfera: [] as string[],
     bosquesProtegidos: [] as string[],
     areasProtegidas: [] as string[],
     // Filtros continuos
-    pluviocidad: { min: 0, max: 5000 },
-    temperatura: { min: -10, max: 40 }
+    areaDistribucion: { min: 1, max: 100000 },
+    pluviocidad: { min: 640, max: 4000 },
+    temperatura: { min: 5, max: 25 }
   });
 
   // Función para buscar en todos los datos
   const searchData = (query: string): SearchResult[] => {
     if (!query || query.length < 2) return [];
-    
+
     const results: SearchResult[] = [];
     const lowerQuery = query.toLowerCase();
 
@@ -79,8 +79,8 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
 
       order.families.forEach((family: FrogFamily) => {
         // Buscar en familias
-        if (family.name.toLowerCase().includes(lowerQuery) || 
-            family.commonNames.some(cn => cn.toLowerCase().includes(lowerQuery))) {
+        if (family.name.toLowerCase().includes(lowerQuery) ||
+          family.commonNames.some(cn => cn.toLowerCase().includes(lowerQuery))) {
           results.push({
             id: family.id,
             name: family.name,
@@ -93,7 +93,7 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
         family.genera.forEach((genus: FrogGenus) => {
           // Buscar en géneros
           if (genus.name.toLowerCase().includes(lowerQuery) ||
-              genus.commonName.toLowerCase().includes(lowerQuery)) {
+            genus.commonName.toLowerCase().includes(lowerQuery)) {
             results.push({
               id: genus.id,
               name: genus.name,
@@ -106,7 +106,7 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
           genus.species.forEach((species: FrogSpecies) => {
             // Buscar en especies
             if (species.scientificName.toLowerCase().includes(lowerQuery) ||
-                species.commonName.toLowerCase().includes(lowerQuery)) {
+              species.commonName.toLowerCase().includes(lowerQuery)) {
               results.push({
                 id: species.id,
                 name: species.scientificName,
@@ -128,7 +128,7 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
   const handleCategoricalChange = (key: string, value: string) => {
     const currentValues = filters[key as keyof typeof filters] as string[];
     let newValues: string[];
-    
+
     if (currentValues.includes(value)) {
       // Si ya está seleccionado, quitarlo
       newValues = currentValues.filter(v => v !== value);
@@ -136,7 +136,7 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
       // Si no está seleccionado, agregarlo
       newValues = [...currentValues, value];
     }
-    
+
     const newFilters = { ...filters, [key]: newValues };
     setFilters(newFilters);
     onFiltersChange(newFilters);
@@ -154,14 +154,14 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
       listaRoja: [] as string[],
       endemismo: [] as string[],
       pisosAltitudinales: [] as string[],
-      areaDistribucion: [] as string[],
       ecosistemas: [] as string[],
       regionesBiogeograficas: [] as string[],
       reservasBiosfera: [] as string[],
       bosquesProtegidos: [] as string[],
       areasProtegidas: [] as string[],
-      pluviocidad: { min: 0, max: 5000 },
-      temperatura: { min: -10, max: 40 }
+      areaDistribucion: { min: 1, max: 100000 },
+      pluviocidad: { min: 640, max: 4000 },
+      temperatura: { min: 5, max: 25 }
     };
     setFilters(resetFilters);
     onFiltersChange(resetFilters);
@@ -206,8 +206,8 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
               />
             </div>
           </PopoverTrigger>
-          <PopoverContent 
-            className="w-[--radix-popover-trigger-width] p-0" 
+          <PopoverContent
+            className="w-[--radix-popover-trigger-width] p-0"
             align="start"
             onOpenAutoFocus={(e) => e.preventDefault()}
           >
@@ -267,9 +267,9 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
         <Accordion type="multiple" className="w-full">
           {/* Provincia */}
           <AccordionItem value="provincia">
-            <AccordionTrigger>Provincia | Categórica</AccordionTrigger>
+            <AccordionTrigger>Provincia</AccordionTrigger>
             <AccordionContent>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-col gap-2">
                 {[
                   'Azuay',
                   'Bolívar',
@@ -304,7 +304,7 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
                       variant={isSelected ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => handleCategoricalChange('provincia', value)}
-                      className="whitespace-nowrap text-xs px-2 py-1 h-auto min-h-[32px]"
+                      className="w-full text-xs px-2 py-1 h-auto min-h-[32px] justify-center text-center"
                     >
                       {province}
                     </Button>
@@ -318,7 +318,7 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
           <AccordionItem value="listaRoja">
             <AccordionTrigger>Lista roja</AccordionTrigger>
             <AccordionContent>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-col gap-2">
                 {[
                   { value: 'PM', label: 'Preocupación Menor (PM)' },
                   { value: 'CaA', label: 'Casi Amenazada (CaA)' },
@@ -335,7 +335,7 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
                       variant={isSelected ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => handleCategoricalChange('listaRoja', status.value)}
-                      className="whitespace-nowrap text-xs px-2 py-1 h-auto min-h-[32px]"
+                      className="w-full text-xs px-2 py-1 h-auto min-h-[32px] justify-center text-center"
                     >
                       {status.label}
                     </Button>
@@ -349,7 +349,7 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
           <AccordionItem value="endemismo">
             <AccordionTrigger>Endemismo</AccordionTrigger>
             <AccordionContent>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-col gap-2">
                 {[
                   { value: 'endemic', label: 'Endémicas' },
                   { value: 'non-endemic', label: 'No endémicas' }
@@ -361,7 +361,7 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
                       variant={isSelected ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => handleCategoricalChange('endemismo', option.value)}
-                      className="whitespace-nowrap text-xs px-2 py-1 h-auto min-h-[32px]"
+                      className="w-full text-xs px-2 py-1 h-auto min-h-[32px] justify-center text-center"
                     >
                       {option.label}
                     </Button>
@@ -375,7 +375,7 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
           <AccordionItem value="pisosAltitudinales">
             <AccordionTrigger>Pisos altitudinales</AccordionTrigger>
             <AccordionContent>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-col gap-2">
                 {[
                   { value: 'tropical-occidental', label: 'Tropical Occidental (0-1000m)' },
                   { value: 'subtropical-occidental', label: 'Subtropical Occidental (1001-2000m)' },
@@ -392,7 +392,7 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
                       variant={isSelected ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => handleCategoricalChange('pisosAltitudinales', floor.value)}
-                      className="whitespace-nowrap text-xs px-2 py-1 h-auto min-h-[32px]"
+                      className="w-full text-xs px-2 py-1 h-auto min-h-[32px] justify-center text-center"
                     >
                       {floor.label}
                     </Button>
@@ -406,26 +406,18 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
           <AccordionItem value="areaDistribucion">
             <AccordionTrigger>Área distribución</AccordionTrigger>
             <AccordionContent>
-              <div className="flex flex-wrap gap-2">
-                {[
-                  { value: 'local', label: 'Local (< 100 km²)' },
-                  { value: 'regional', label: 'Regional (100-1000 km²)' },
-                  { value: 'nacional', label: 'Nacional (1000-10000 km²)' },
-                  { value: 'continental', label: 'Continental (> 10000 km²)' }
-                ].map((area) => {
-                  const isSelected = filters.areaDistribucion.includes(area.value);
-                  return (
-                    <Button
-                      key={area.value}
-                      variant={isSelected ? 'default' : 'outline'}
-                      size="sm"
-                      onClick={() => handleCategoricalChange('areaDistribucion', area.value)}
-                      className="whitespace-nowrap text-xs px-2 py-1 h-auto min-h-[32px]"
-                    >
-                      {area.label}
-                    </Button>
-                  );
-                })}
+              <div className="space-y-4">
+                <div className="flex justify-between text-sm text-gray-600">
+                  <span>{filters.areaDistribucion.min} km²</span>
+                  <span>{filters.areaDistribucion.max} km²</span>
+                </div>
+                <Slider
+                  min={1}
+                  max={100000}
+                  step={100}
+                  value={[filters.areaDistribucion.min, filters.areaDistribucion.max]}
+                  onValueChange={(values) => handleSliderChange('areaDistribucion', values)}
+                />
               </div>
             </AccordionContent>
           </AccordionItem>
@@ -434,13 +426,97 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
           <AccordionItem value="ecosistemas">
             <AccordionTrigger>Ecosistemas</AccordionTrigger>
             <AccordionContent>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-col gap-2">
                 {[
-                  { value: 'bosque-tropical', label: 'Bosque Tropical' },
-                  { value: 'bosque-nublado', label: 'Bosque Nublado' },
-                  { value: 'paramo', label: 'Páramo' },
-                  { value: 'manglar', label: 'Manglar' },
-                  { value: 'sabana', label: 'Sabana' }
+                  { value: 'agua', label: 'Agua' },
+                  { value: 'arbustal-deciduo-y-herbazal-de-playas-del-litoral', label: 'Arbustal deciduo y Herbazal de playas del Litoral' },
+                  { value: 'arbustal-desertico-de-tierras-bajas-del-jama-zapotillo', label: 'Arbustal desértico de tierras bajas del Jama-Zapotillo' },
+                  { value: 'arbustal-desertico-del-sur-de-los-valles', label: 'Arbustal desértico del sur de los Valles' },
+                  { value: 'arbustal-semideciduo-del-sur-de-los-valles', label: 'Arbustal semideciduo del sur de los Valles' },
+                  { value: 'arbustal-siempreverde-montano-alto-del-paramo-del-sur', label: 'Arbustal siempreverde montano alto del Páramo del sur' },
+                  { value: 'arbustal-siempreverde-montano-del-norte-de-los-andes', label: 'Arbustal siempreverde montano del norte de los Andes' },
+                  { value: 'arbustal-siempreverde-montano-del-sur-de-los-andes', label: 'Arbustal siempreverde montano del sur de los Andes' },
+                  { value: 'arbustal-siempreverde-ripario-de-la-cordillera-oriental-de-los-andes', label: 'Arbustal siempreverde ripario de la Cordillera Oriental de los Andes' },
+                  { value: 'arbustal-siempreverde-y-herbazal-del-paramo', label: 'Arbustal siempreverde y Herbazal del Páramo' },
+                  { value: 'arbustal-siempreverde-y-herbazal-montano-de-la-cordillera-del-condor', label: 'Arbustal siempreverde y Herbazal montano de la cordillera del Cóndor' },
+                  { value: 'bosque-bajo-y-arbustal-deciduo-de-tierras-bajas-del-jama-zapotillo', label: 'Bosque bajo y Arbustal deciduo de tierras bajas del Jama-Zapotillo' },
+                  { value: 'bosque-deciduo-de-cordillera-costera-del-pacifico-ecuatorial', label: 'Bosque deciduo de Cordillera Costera del Pacífico Ecuatorial' },
+                  { value: 'bosque-deciduo-de-tierras-bajas-del-jama-zapotillo', label: 'Bosque deciduo de tierras bajas del Jama-Zapotillo' },
+                  { value: 'bosque-deciduo-montano-bajo-del-catamayo-alamor', label: 'Bosque deciduo montano bajo del Catamayo-Alamor' },
+                  { value: 'bosque-deciduo-piemontano-del-catamayo-alamor', label: 'Bosque deciduo piemontano del Catamayo-Alamor' },
+                  { value: 'bosque-inundable-de-la-llanura-aluvial-de-los-rios-de-origen-amazonico', label: 'Bosque inundable de la llanura aluvial de los ríos de origen amazónico' },
+                  { value: 'bosque-inundable-de-la-llanura-aluvial-de-los-rios-de-origen-andino-y-de-cordilleras-amazonicas', label: 'Bosque inundable de la llanura aluvial de los ríos de origen andino y de Cordilleras Amazónicas' },
+                  { value: 'bosque-inundable-de-llanura-intermareal-del-choco-ecuatorial', label: 'Bosque inundable de llanura intermareal del Chocó Ecuatorial' },
+                  { value: 'bosque-inundable-y-vegetacin-lacustre-riparia-de-aguas-negras-de-la-amazonia', label: 'Bosque inundable y vegetacin lacustre-riparia de aguas negras de la Amazonía' },
+                  { value: 'bosque-inundado-de-la-llanura-aluvial-de-la-amazonia', label: 'Bosque inundado de la llanura aluvial de la Amazonía' },
+                  { value: 'bosque-inundado-de-llanura-aluvial-del-choco-ecuatorial', label: 'Bosque inundado de llanura aluvial del Chocó Ecuatorial' },
+                  { value: 'bosque-inundado-de-palmas-de-la-llanura-aluvial-de-la-amazonia', label: 'Bosque inundado de palmas de la llanura aluvial de la Amazonía' },
+                  { value: 'bosque-semideciduo-de-cordillera-costera-del-pacifico-ecuatorial', label: 'Bosque semideciduo de Cordillera Costera del Pacífico Ecuatorial' },
+                  { value: 'bosque-semideciduo-de-tierras-bajas-del-jama-zapotillo', label: 'Bosque semideciduo de tierras bajas del Jama-Zapotillo' },
+                  { value: 'bosque-semideciduo-montano-bajo-del-catamayo-alamor', label: 'Bosque semideciduo montano bajo del Catamayo-Alamor' },
+                  { value: 'bosque-semideciduo-piemontano-del-catamayo-alamor', label: 'Bosque semideciduo piemontano del Catamayo-Alamor' },
+                  { value: 'bosque-semideciduo-piemontano-del-sur-de-la-cordillera-oriental-de-los-andes', label: 'Bosque semideciduo piemontano del Sur de la Cordillera Oriental de los Andes' },
+                  { value: 'bosque-siempreverde-de-tierras-bajas-con-bambu-de-la-amazonia', label: 'Bosque siempreverde de tierras bajas con bambú de la Amazonía' },
+                  { value: 'bosque-siempreverde-de-tierras-bajas-del-abanico-del-pastaza', label: 'Bosque siempreverde de tierras bajas del Abanico del Pastaza' },
+                  { value: 'bosque-siempreverde-de-tierras-bajas-del-aguarico-putumayo-caqueta', label: 'Bosque siempreverde de tierras bajas del Aguarico-Putumayo-Caquetá' },
+                  { value: 'bosque-siempreverde-de-tierras-bajas-del-choco-ecuatorial', label: 'Bosque siempreverde de tierras bajas del Chocó Ecuatorial' },
+                  { value: 'bosque-siempreverde-de-tierras-bajas-del-napo-curaray', label: 'Bosque siempreverde de tierras bajas del Napo-Curaray' },
+                  { value: 'bosque-siempreverde-de-tierras-bajas-del-tigre-pastaza', label: 'Bosque siempreverde de tierras bajas del Tigre-Pastaza' },
+                  { value: 'bosque-siempreverde-del-paramo', label: 'Bosque siempreverde del Páramo' },
+                  { value: 'bosque-siempreverde-estacional-de-tierras-bajas-del-choco-ecuatorial', label: 'Bosque siempreverde estacional de tierras bajas del Chocó Ecuatorial' },
+                  { value: 'bosque-siempreverde-estacional-de-tierras-bajas-del-jama-zapotillo', label: 'Bosque siempreverde estacional de tierras bajas del Jama-Zapotillo' },
+                  { value: 'bosque-siempreverde-estacional-inundable-de-llanura-aluvial-del-jama-zapotillo', label: 'Bosque siempreverde estacional inundable de llanura aluvial del Jama-Zapotillo' },
+                  { value: 'bosque-siempreverde-estacional-montano-bajo-de-cordillera-costera-del-pacifico-ecuatorial', label: 'Bosque siempreverde estacional montano bajo de Cordillera Costera del Pacífico Ecuatorial' },
+                  { value: 'bosque-siempreverde-estacional-montano-bajo-del-catamayo-alamor', label: 'Bosque siempreverde estacional montano bajo del Catamayo-Alamor' },
+                  { value: 'bosque-siempreverde-estacional-piemontano-de-cordillera-costera-del-choco', label: 'Bosque siempreverde estacional piemontano de Cordillera Costera del Chocó' },
+                  { value: 'bosque-siempreverde-estacional-piemontano-de-cordillera-costera-del-pacifico-ecuatorial', label: 'Bosque siempreverde estacional piemontano de Cordillera Costera del Pacífico Ecuatorial' },
+                  { value: 'bosque-siempreverde-estacional-piemontano-de-cordillera-occidental-de-los-andes', label: 'Bosque siempreverde estacional piemontano de Cordillera Occidental de los Andes' },
+                  { value: 'bosque-siempreverde-estacional-piemontano-del-catamayo-alamor', label: 'Bosque siempreverde estacional piemontano del Catamayo-Alamor' },
+                  { value: 'bosque-siempreverde-montano-alto-de-cordillera-occidental-de-los-andes', label: 'Bosque siempreverde montano alto de Cordillera Occidental de los Andes' },
+                  { value: 'bosque-siempreverde-montano-alto-del-catamayo-alamor', label: 'Bosque siempreverde montano alto del Catamayo-Alamor' },
+                  { value: 'bosque-siempreverde-montano-alto-del-norte-de-la-cordillera-oriental-de-los-andes', label: 'Bosque siempreverde montano alto del Norte de la Cordillera Oriental de los Andes' },
+                  { value: 'bosque-siempreverde-montano-alto-del-sur-de-la-cordillera-oriental-de-los-andes', label: 'Bosque siempreverde montano alto del Sur de la Cordillera Oriental de los Andes' },
+                  { value: 'bosque-siempreverde-montano-bajo-de-cordillera-costera-del-choco', label: 'Bosque siempreverde montano bajo de Cordillera Costera del Chocó' },
+                  { value: 'bosque-siempreverde-montano-bajo-de-cordillera-occidental-de-los-andes', label: 'Bosque siempreverde montano bajo de Cordillera Occidental de los Andes' },
+                  { value: 'bosque-siempreverde-montano-bajo-de-galeras', label: 'Bosque siempreverde montano bajo de Galeras' },
+                  { value: 'bosque-siempreverde-montano-bajo-de-las-cordilleras-del-condor-kutuku', label: 'Bosque siempreverde montano bajo de las cordilleras del Cóndor-Kutukú' },
+                  { value: 'bosque-siempreverde-montano-bajo-del-catamayo-alamor', label: 'Bosque siempreverde montano bajo del Catamayo-Alamor' },
+                  { value: 'bosque-siempreverde-montano-bajo-del-norte-de-la-cordillera-oriental-de-los-andes', label: 'Bosque siempreverde montano bajo del Norte de la Cordillera Oriental de los Andes' },
+                  { value: 'bosque-siempreverde-montano-bajo-del-sur-de-la-cordillera-oriental-de-los-andes', label: 'Bosque siempreverde montano bajo del Sur de la Cordillera Oriental de los Andes' },
+                  { value: 'bosque-siempreverde-montano-bajo-sobre-mesetas-de-arenisca-de-las-cordilleras-del-condor-kutuku', label: 'Bosque siempreverde montano bajo sobre mesetas de arenisca de las cordilleras del Cóndor-Kutukú' },
+                  { value: 'bosque-siempreverde-montano-de-cordillera-occidental-de-los-andes', label: 'Bosque siempreverde montano de Cordillera Occidental de los Andes' },
+                  { value: 'bosque-siempreverde-montano-de-las-cordilleras-del-condor-kutuku', label: 'Bosque siempreverde montano de las cordilleras del Cóndor-Kutukú' },
+                  { value: 'bosque-siempreverde-montano-del-catamayo-alamor', label: 'Bosque siempreverde montano del Catamayo-Alamor' },
+                  { value: 'bosque-siempreverde-montano-del-norte-de-la-cordillera-oriental-de-los-andes', label: 'Bosque siempreverde montano del Norte de la Cordillera Oriental de los Andes' },
+                  { value: 'bosque-siempreverde-montano-del-sur-de-la-cordillera-oriental-de-los-andes', label: 'Bosque siempreverde montano del Sur de la Cordillera Oriental de los Andes' },
+                  { value: 'bosque-siempreverde-montano-sobre-mesetas-de-arenisca-de-la-cordillera-del-condor', label: 'Bosque siempreverde montano sobre mesetas de arenisca de la cordillera del Cóndor' },
+                  { value: 'bosque-siempreverde-piemontano-de-cordillera-occidental-de-los-andes', label: 'Bosque siempreverde piemontano de Cordillera Occidental de los Andes' },
+                  { value: 'bosque-siempreverde-piemontano-de-galeras', label: 'Bosque siempreverde piemontano de Galeras' },
+                  { value: 'bosque-siempreverde-piemontano-de-las-cordilleras-del-condor-kutuku', label: 'Bosque siempreverde piemontano de las cordilleras del Cóndor-Kutukú' },
+                  { value: 'bosque-siempreverde-piemontano-del-catamayo-alamor', label: 'Bosque siempreverde piemontano del Catamayo-Alamor' },
+                  { value: 'bosque-siempreverde-piemontano-del-norte-de-la-cordillera-oriental-de-los-andes', label: 'Bosque siempreverde piemontano del Norte de la Cordillera Oriental de los Andes' },
+                  { value: 'bosque-siempreverde-piemontano-del-sur-de-la-cordillera-oriental-de-los-andes', label: 'Bosque siempreverde piemontano del Sur de la Cordillera Oriental de los Andes' },
+                  { value: 'bosque-siempreverde-piemontano-sobre-afloramientos-de-roca-caliza-de-las-cordilleras-amazonicas', label: 'Bosque siempreverde piemontano sobre afloramientos de roca caliza de las Cordilleras Amazónicas' },
+                  { value: 'bosque-siempreverde-piemontano-sobre-mesetas-de-arenisca-de-las-cordilleras-del-condor-kutuku', label: 'Bosque siempreverde piemontano sobre mesetas de arenisca de las cordilleras del Cóndor-Kutukú' },
+                  { value: 'bosque-siempreverde-sobre-mesetas-de-arenisca-de-la-cordillera-del-condor-en-la-baja-amazonia-ecuatoriana', label: 'Bosque siempreverde sobre mesetas de arenisca de la cordillera del Cóndor en la baja Amazonía Ecuatoriana' },
+                  { value: 'bosque-y-arbustal-semideciduo-del-norte-de-los-valles', label: 'Bosque y Arbustal semideciduo del norte de los Valles' },
+                  { value: 'bosque-y-arbustal-semideciduo-del-sur-de-los-valles', label: 'Bosque y Arbustal semideciduo del sur de los Valles' },
+                  { value: 'herbazal-del-paramo', label: 'Herbazal del Páramo' },
+                  { value: 'herbazal-humedo-montano-alto-superior-del-paramo', label: 'Herbazal húmedo montano alto superior del Páramo' },
+                  { value: 'herbazal-humedo-subnival-del-paramo', label: 'Herbazal húmedo subnival del Páramo' },
+                  { value: 'herbazal-inundable-del-paramo', label: 'Herbazal inundable del Páramo' },
+                  { value: 'herbazal-inundable-ripario-de-tierras-bajas-del-choco-ecuatorial', label: 'Herbazal inundable ripario de tierras bajas del Chocó Ecuatorial' },
+                  { value: 'herbazal-inundable-ripario-de-tierras-bajas-del-jama-zapotillo', label: 'Herbazal inundable ripario de tierras bajas del Jama-Zapotillo' },
+                  { value: 'herbazal-inundado-lacustre-del-pacifico-ecuatorial', label: 'Herbazal inundado lacustre del Pacífico Ecuatorial' },
+                  { value: 'herbazal-inundado-lacustre-ripario-de-la-llanura-aluvial-de-la-amazonia', label: 'Herbazal inundado lacustre-ripario de la llanura aluvial de la Amazonía' },
+                  { value: 'herbazal-lacustre-montano-bajo-del-sur-de-la-cordillera-oriental-de-los-andes', label: 'Herbazal lacustre montano bajo del Sur de la Cordillera Oriental de los Andes' },
+                  { value: 'herbazal-ultrahumedo-subnival-del-paramo', label: 'Herbazal ultrahúmedo subnival del Páramo' },
+                  { value: 'herbazal-y-arbustal-siempreverde-del-paramo-del-volcan-sumaco', label: 'Herbazal y Arbustal siempreverde del Páramo del volcán Sumaco' },
+                  { value: 'herbazal-y-arbustal-siempreverde-subnival-del-paramo', label: 'Herbazal y Arbustal siempreverde subnival del Páramo' },
+                  { value: 'intervencion', label: 'Intervención' },
+                  { value: 'manglar-del-choco-ecuatorial', label: 'Manglar del Chocó Ecuatorial' },
+                  { value: 'manglar-del-jama-zapotillo', label: 'Manglar del Jama-Zapotillo' },
+                  { value: 'rosetal-caulescente-y-herbazal-del-paramo-frailejones', label: 'Rosetal caulescente y Herbazal del Páramo (frailejones)' }
                 ].map((ecosystem) => {
                   const isSelected = filters.ecosistemas.includes(ecosystem.value);
                   return (
@@ -449,7 +525,7 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
                       variant={isSelected ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => handleCategoricalChange('ecosistemas', ecosystem.value)}
-                      className="whitespace-nowrap text-xs px-2 py-1 h-auto min-h-[32px]"
+                      className="w-full text-xs px-2 py-1 h-auto min-h-[32px] justify-center text-center whitespace-normal break-words"
                     >
                       {ecosystem.label}
                     </Button>
@@ -463,7 +539,7 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
           <AccordionItem value="regionesBiogeograficas">
             <AccordionTrigger>Regiones biogeográficas</AccordionTrigger>
             <AccordionContent>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-col gap-2">
                 {[
                   { value: 'cordilleras-amazonicas', label: 'Cordilleras Amazónicas' },
                   { value: 'aguarico-putumayo-caqueta', label: 'Aguarico-Putumayo-Caquetá' },
@@ -488,7 +564,7 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
                       variant={isSelected ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => handleCategoricalChange('regionesBiogeograficas', region.value)}
-                      className="whitespace-nowrap text-xs px-2 py-1 h-auto min-h-[32px]"
+                      className="w-full text-xs px-2 py-1 h-auto min-h-[32px] justify-center text-center"
                     >
                       {region.label}
                     </Button>
@@ -502,10 +578,14 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
           <AccordionItem value="reservasBiosfera">
             <AccordionTrigger>Reservas de la biosfera</AccordionTrigger>
             <AccordionContent>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-col gap-2">
                 {[
-                  { value: 'yes', label: 'Con reserva' },
-                  { value: 'no', label: 'Sin reserva' }
+                  { value: 'reserva-de-la-biosfera-choco-andino-de-pichincha', label: 'Reserva de la Biósfera Chocó Andino de Pichíncha' },
+                  { value: 'reserva-de-la-biosfera-macizo-del-cajas', label: 'Reserva de la Biósfera Macizo del Cajas' },
+                  { value: 'reserva-de-la-biosfera-podocarpus-el-condor', label: 'Reserva de la Biósfera Podocarpus - El Cóndor' },
+                  { value: 'reserva-de-la-biosfera-sumaco', label: 'Reserva de la Biósfera Sumaco' },
+                  { value: 'reserva-de-la-biosfera-yasuni', label: 'Reserva de la Biósfera Yasuní' },
+                  { value: 'reserva-de-la-biosfera-del-bosque-seco', label: 'Reserva de la Biósfera del Bosque Seco' }
                 ].map((option) => {
                   const isSelected = filters.reservasBiosfera.includes(option.value);
                   return (
@@ -514,7 +594,7 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
                       variant={isSelected ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => handleCategoricalChange('reservasBiosfera', option.value)}
-                      className="whitespace-nowrap text-xs px-2 py-1 h-auto min-h-[32px]"
+                      className="w-full text-xs px-2 py-1 h-auto min-h-[32px] justify-center text-center whitespace-normal break-words"
                     >
                       {option.label}
                     </Button>
@@ -528,10 +608,100 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
           <AccordionItem value="bosquesProtegidos">
             <AccordionTrigger>Bosques protegidos</AccordionTrigger>
             <AccordionContent>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-col gap-2">
                 {[
-                  { value: 'yes', label: 'Protegidos' },
-                  { value: 'no', label: 'No protegidos' }
+                  { value: '15-areas-del-interior-de-la-cuenca-del-rio-paute', label: '15 áreas del interior de la Cuenca del Río Paute' },
+                  { value: 'abanico', label: 'Abanico' },
+                  { value: 'aguacatal-de-arriba-jauneche', label: 'Aguacatal de Arriba (Jauneche)' },
+                  { value: 'animanga-o-taminanga-grande', label: 'Animanga o Taminanga Grande' },
+                  { value: 'asociacion-agricola-carchi-imbabura', label: 'Asociación Agrícola Carchi-Imbabura' },
+                  { value: 'asociacion-cofradia-huacupamba', label: 'Asociación Cofradia Huacupamba' },
+                  { value: 'asociacion-shiwiar-bufeo-tunkintza-ashibt', label: 'Asociación Shiwiar Bufeo Tunkintza Ashibt' },
+                  { value: 'asociacion-de-centros-shuar-tayunts', label: 'Asociación de Centros Shuar Tayunts' },
+                  { value: 'asociacion-de-produccion-agropecuaria-y-forestal-galo-andrade-salas', label: 'Asociación de Producción Agropecuaria y Forestal Galo Andrade Salas' },
+                  { value: 'asociacion-de-trabajadores-autonomos-san-jose-de-las-orquideas-atamos', label: 'Asociación de Trabajadores Autónomos San José de las Orquídeas ATAMOS' },
+                  { value: 'bosque-petrificado-del-puyango', label: 'Bosque Petrificado del Puyango' },
+                  { value: 'cambugan', label: 'Cambugan' },
+                  { value: 'carrizal-chone', label: 'Carrizal - Chone' },
+                  { value: 'cashca-totoras', label: 'Cashca Totoras' },
+                  { value: 'cebu', label: 'Cebu' },
+                  { value: 'centro-chachi-corriente-grande', label: 'Centro Chachi Corriente Grande' },
+                  { value: 'ceploa', label: 'Ceploa' },
+                  { value: 'cerro-blanco', label: 'Cerro Blanco' },
+                  { value: 'cerro-candelaria', label: 'Cerro Candelaria' },
+                  { value: 'cerro-golondrinas', label: 'Cerro Golondrinas' },
+                  { value: 'cerro-sumaco-y-cuenca-alta-del-rio-suno', label: 'Cerro Sumaco y Cuenca alta del río Suno' },
+                  { value: 'chamiso-minas', label: 'Chamiso Minas' },
+                  { value: 'colambo-yacuri', label: 'Colambo-Yacurí' },
+                  { value: 'comuna-agropecuaria-la-esperanza', label: 'Comuna Agropecuaria La Esperanza' },
+                  { value: 'comuna-ancestral-de-indigenas-pasto-la-libertad', label: 'Comuna Ancestral de Indígenas Pasto La Libertad' },
+                  { value: 'comuna-kichwa-anangu', label: 'Comuna Kichwa Añangu' },
+                  { value: 'comuna-loma-alta', label: 'Comuna Loma Alta' },
+                  { value: 'comuna-matiavi-salinas', label: 'Comuna Matiavi Salinas' },
+                  { value: 'comuna-playa-de-oro', label: 'Comuna Playa de Oro' },
+                  { value: 'comuna-rio-santiago-cayapas', label: 'Comuna Río Santiago Cayapas' },
+                  { value: 'comuna-san-miguel-negro', label: 'Comuna San Miguel Negro' },
+                  { value: 'comuna-santa-elena', label: 'Comuna Santa Elena' },
+                  { value: 'comunidad-kichwa-wamani-cokiwa', label: 'Comunidad Kichwa Wamani Cokiwa' },
+                  { value: 'comunidad-shuar-wisui', label: 'Comunidad Shuar Wisui' },
+                  { value: 'comunidad-yatzaputzan', label: 'Comunidad Yatzaputzan' },
+                  { value: 'cooperativa-de-conservacion-y-desarrollo-comunitario-sustentable-santa-lucia', label: 'Cooperativa de Conservación y Desarrollo Comunitario Sustentable Santa Lucia' },
+                  { value: 'corazon-de-oro', label: 'Corazón de Oro' },
+                  { value: 'cordillera-chongon-colonche', label: 'Cordillera Chongon Colonche' },
+                  { value: 'cordillera-kutuku-y-shaimi', label: 'Cordillera Kutukú y Shaimi' },
+                  { value: 'cordillera-del-condor', label: 'Cordillera del Cóndor' },
+                  { value: 'cuembi', label: 'Cuembi' },
+                  { value: 'cuenca-alta-del-rio-nangaritza', label: 'Cuenca Alta del Río Nangaritza' },
+                  { value: 'cuenca-rio-guayllabamba-area-1-area-2', label: 'Cuenca Río Guayllabamba (Área 1 - Área 2)' },
+                  { value: 'cuenca-del-rio-malacatos-en-loja', label: 'Cuenca del Río Malacatos en Loja' },
+                  { value: 'cuenca-del-rio-paute', label: 'Cuenca del Río Paute' },
+                  { value: 'cuencas-que-forman-los-rios-san-francisco-san-ramon-y-sabanilla', label: 'Cuencas que forman los Ríos: San Francisco, San Ramon y Sabanilla' },
+                  { value: 'daule-peripa', label: 'Daule - Peripa' },
+                  { value: 'delta', label: 'Delta' },
+                  { value: 'dos-mangas', label: 'Dos Mangas' },
+                  { value: 'el-bermejo', label: 'El Bermejo' },
+                  { value: 'estacion-cientifica-rio-guajalito', label: 'Estación Científica Río Guajalito' },
+                  { value: 'flanco-oriental-de-pichincha-y-cinturon-verde-de-quito', label: 'Flanco Oriental de Pichíncha y Cinturón Verde de Quito' },
+                  { value: 'hacienda-piganta', label: 'Hacienda Piganta' },
+                  { value: 'la-cascada', label: 'La Cascada' },
+                  { value: 'la-ceiba', label: 'La Ceiba' },
+                  { value: 'loma-alta-y-ampliacion', label: 'Loma Alta y Ampliación' },
+                  { value: 'lomas-corazon-y-bretana', label: 'Lomas Corazón y Bretana' },
+                  { value: 'los-cedros', label: 'Los Cedros' },
+                  { value: 'maquipucuna', label: 'Maquipucuna' },
+                  { value: 'mashpi', label: 'Mashpi' },
+                  { value: 'mazan', label: 'Mazan' },
+                  { value: 'milpe-pachijal', label: 'Milpe Pachijal' },
+                  { value: 'mindo-nambillo', label: 'Mindo Nambillo' },
+                  { value: 'mirador-de-las-golondrinas', label: 'Mirador de Las Golondrinas' },
+                  { value: 'molleturo-y-mollepungo', label: 'Molleturo y Mollepungo' },
+                  { value: 'nacionalidad-andwa-de-pastaza-del-ecuador', label: 'Nacionalidad Andwa de Pastaza del Ecuador' },
+                  { value: 'nacionalidad-sapara-nase', label: 'Nacionalidad Sapara (Nase)' },
+                  { value: 'nacionalidad-sapara-del-ecuador', label: 'Nacionalidad Sapara del Ecuador' },
+                  { value: 'nacionalidad-shiwiar', label: 'Nacionalidad Shiwiar' },
+                  { value: 'nacionalidad-shiwiar-del-ecuador-nashie', label: 'Nacionalidad Shiwiar del Ecuador Nashie' },
+                  { value: 'nacionalidad-waorani-del-ecuador', label: 'Nacionalidad Waorani del Ecuador' },
+                  { value: 'neblina-sur', label: 'Neblina Sur' },
+                  { value: 'panacocha', label: 'Panacocha' },
+                  { value: 'parte-de-los-cerros-de-los-llanganates', label: 'Parte de Los Cerros de Los Llanganates' },
+                  { value: 'pata-de-pajaro', label: 'Pata de Pájaro' },
+                  { value: 'pueblo-ancestral-kichwa-kawsac-sacha', label: 'Pueblo Ancestral Kichwa Kawsac Sacha' },
+                  { value: 'pueblo-curaray-morete-playa-ochacungo-quillualpa', label: 'Pueblo Curaray Morete Playa Ochacungo Quillualpa' },
+                  { value: 'pueblo-kichwa-rukullacta', label: 'Pueblo Kichwa Rukullacta' },
+                  { value: 'pueblo-shuar-arutam', label: 'Pueblo Shuar Arutam' },
+                  { value: 'quinoa-miguir', label: 'Quinoa Miguir' },
+                  { value: 'rio-aguarico', label: 'Río Aguarico' },
+                  { value: 'rio-arenillas-presa-tahuin', label: 'Río Arenillas Presa Tahuin' },
+                  { value: 'rio-lelia', label: 'Río Lelia' },
+                  { value: 'sacha-lodge', label: 'Sacha Lodge' },
+                  { value: 'siempre-verde', label: 'Siempre Verde' },
+                  { value: 'subcuenca-alta-del-rio-leon-y-microcuencas-de-los-rios-san-felipe-de-ona-y-shincata', label: 'Subcuenca Alta del Río Leon y Microcuencas de Los Ríos San Felipe de Ona y Shincata' },
+                  { value: 'subcuenca-del-rio-tambo-tamboyacu-antisana-pita-cinto-saloya-pichan-y-qda-san-juan', label: 'Subcuenca del Río Tambo, Tamboyacu, Antisana, Pita, Cinto, Saloya, Pichan y Qda San Juan' },
+                  { value: 'subcuencas-de-los-rios-matiavi-y-mulidianhuan-pena-blanca', label: 'Subcuencas de los ríos Matiavi y Mulidianhuan (Peña Blanca)' },
+                  { value: 'tinajillas-rio-gualaceno', label: 'Tinajillas Río Gualaceno' },
+                  { value: 'toachi-pilaton', label: 'Toachi Pilatón' },
+                  { value: 'uzchurrumi-la-cadena-pena-dorada-brasil', label: 'Uzchurrumi, La Cadena, Peña Dorada, Brasil' },
+                  { value: 'zarapullo', label: 'Zarapullo' }
                 ].map((option) => {
                   const isSelected = filters.bosquesProtegidos.includes(option.value);
                   return (
@@ -540,7 +710,7 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
                       variant={isSelected ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => handleCategoricalChange('bosquesProtegidos', option.value)}
-                      className="whitespace-nowrap text-xs px-2 py-1 h-auto min-h-[32px]"
+                      className="w-full text-xs px-2 py-1 h-auto min-h-[32px] justify-center text-center whitespace-normal break-words"
                     >
                       {option.label}
                     </Button>
@@ -554,10 +724,48 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
           <AccordionItem value="areasProtegidas">
             <AccordionTrigger>Áreas protegidas</AccordionTrigger>
             <AccordionContent>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-col gap-2">
                 {[
-                  { value: 'yes', label: 'Protegidas' },
-                  { value: 'no', label: 'No protegidas' }
+                  { value: 'parque-nacional-antisana', label: 'Parque Nacional Antisana' },
+                  { value: 'parque-nacional-cajas', label: 'Parque Nacional Cajas' },
+                  { value: 'parque-nacional-cayambe-coca', label: 'Parque Nacional Cayambe Coca' },
+                  { value: 'parque-nacional-cotacachi-cayapas', label: 'Parque Nacional Cotacachi Cayapas' },
+                  { value: 'parque-nacional-cotopaxi', label: 'Parque Nacional Cotopaxi' },
+                  { value: 'parque-nacional-llanganates', label: 'Parque Nacional Llanganates' },
+                  { value: 'parque-nacional-machalilla', label: 'Parque Nacional Machalilla' },
+                  { value: 'parque-nacional-podocarpus', label: 'Parque Nacional Podocarpus' },
+                  { value: 'parque-nacional-rio-negro-sopladora', label: 'Parque Nacional Rio Negro Sopladora' },
+                  { value: 'parque-nacional-sangay', label: 'Parque Nacional Sangay' },
+                  { value: 'parque-nacional-sumaco-napo-galeras', label: 'Parque Nacional Sumaco Napo-Galeras' },
+                  { value: 'parque-nacional-yacuri', label: 'Parque Nacional Yacuri' },
+                  { value: 'parque-nacional-yasuni', label: 'Parque Nacional Yasuní' },
+                  { value: 'refugio-de-vida-silvestre-la-chiquita', label: 'Refugio de Vida Silvestre La Chiquita' },
+                  { value: 'refugio-de-vida-silvestre-manglares-estuario-del-rio-muisne', label: 'Refugio de Vida Silvestre Manglares Estuario del Rio Muisne' },
+                  { value: 'refugio-de-vida-silvestre-pacoche', label: 'Refugio de Vida Silvestre Pacoche' },
+                  { value: 'refugio-de-vida-silvestre-pasochoa', label: 'Refugio de Vida Silvestre Pasochoa' },
+                  { value: 'refugio-de-vida-silvestre-samama-mumbes', label: 'Refugio de Vida Silvestre Samama Mumbes' },
+                  { value: 'reserva-biologica-cerro-plateado', label: 'Reserva Biológica Cerro Plateado' },
+                  { value: 'reserva-biologica-colonso-chalupas', label: 'Reserva Biológica Colonso Chalupas' },
+                  { value: 'reserva-biologica-el-condor', label: 'Reserva Biológica El Cóndor' },
+                  { value: 'reserva-biologica-el-quimi', label: 'Reserva Biológica El Quimi' },
+                  { value: 'reserva-biologica-limoncocha', label: 'Reserva Biológica Limoncocha' },
+                  { value: 'reserva-ecologica-el-angel', label: 'Reserva Ecológica El Ángel' },
+                  { value: 'reserva-ecologica-los-ilinizas', label: 'Reserva Ecológica Los Ilinizas' },
+                  { value: 'reserva-ecologica-mache-chindul', label: 'Reserva Ecológica Mache Chindul' },
+                  { value: 'reserva-ecologica-manglares-cayapas-mataje', label: 'Reserva Ecológica Manglares Cayapas Mataje' },
+                  { value: 'reserva-ecologica-manglares-churute', label: 'Reserva Ecológica Manglares Churute' },
+                  { value: 'reserva-geobotanica-pululahua', label: 'Reserva Geobotanica Pululahua' },
+                  { value: 'reserva-de-produccion-de-fauna-chimborazo', label: 'Reserva de Producción de Fauna Chimborazo' },
+                  { value: 'reserva-de-produccion-de-fauna-cuyabeno', label: 'Reserva de Producción de Fauna Cuyabeno' },
+                  { value: 'area-ecologica-de-conservacion-municipal-la-bonita', label: 'Área Ecológica de Conservación Municipal La Bonita' },
+                  { value: 'area-ecologica-de-conservacion-municipal-siete-iglesias', label: 'Área Ecológica de Conservación Municipal Siete Iglesias' },
+                  { value: 'area-protegida-autonoma-desentralizada-coordillera-oriental-del-carchi', label: 'Área Protegida Autónoma Desentralizada Coordillera Oriental del Carchi' },
+                  { value: 'area-protegida-autonoma-desentralizada-mazan', label: 'Área Protegida Autónoma Desentralizada Mazan' },
+                  { value: 'area-protegida-comunitaria-marcos-perez-de-castilla', label: 'Área Protegida Comunitaria Marcos Perez de Castilla' },
+                  { value: 'area-protegida-privada-bellavista', label: 'Área Protegida Privada Bellavista' },
+                  { value: 'area-protegida-privada-candelaria', label: 'Área Protegida Privada Candelaria' },
+                  { value: 'area-protegida-privada-neblina-norte', label: 'Área Protegida Privada Neblina Norte' },
+                  { value: 'area-protegida-privada-zunag', label: 'Área Protegida Privada Zúñag' }
                 ].map((option) => {
                   const isSelected = filters.areasProtegidas.includes(option.value);
                   return (
@@ -566,7 +774,7 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
                       variant={isSelected ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => handleCategoricalChange('areasProtegidas', option.value)}
-                      className="whitespace-nowrap text-xs px-2 py-1 h-auto min-h-[32px]"
+                      className="w-full text-xs px-2 py-1 h-auto min-h-[32px] justify-center text-center whitespace-normal break-words"
                     >
                       {option.label}
                     </Button>
@@ -578,7 +786,7 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
 
           {/* Pluviocidad (Slider) */}
           <AccordionItem value="pluviocidad">
-            <AccordionTrigger>Pluviocidad (Continua)</AccordionTrigger>
+            <AccordionTrigger>Pluviocidad</AccordionTrigger>
             <AccordionContent>
               <div className="space-y-4">
                 <div className="flex justify-between text-sm text-gray-600">
@@ -586,8 +794,8 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
                   <span>{filters.pluviocidad.max} mm/año</span>
                 </div>
                 <Slider
-                  min={0}
-                  max={5000}
+                  min={640}
+                  max={4000}
                   step={50}
                   value={[filters.pluviocidad.min, filters.pluviocidad.max]}
                   onValueChange={(values) => handleSliderChange('pluviocidad', values)}
@@ -598,7 +806,7 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
 
           {/* Temperatura (Slider) */}
           <AccordionItem value="temperatura">
-            <AccordionTrigger>Temperatura (Continua)</AccordionTrigger>
+            <AccordionTrigger>Temperatura</AccordionTrigger>
             <AccordionContent>
               <div className="space-y-4">
                 <div className="flex justify-between text-sm text-gray-600">
@@ -606,8 +814,8 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
                   <span>{filters.temperatura.max} °C</span>
                 </div>
                 <Slider
-                  min={-10}
-                  max={40}
+                  min={5}
+                  max={25}
                   step={1}
                   value={[filters.temperatura.min, filters.temperatura.max]}
                   onValueChange={(values) => handleSliderChange('temperatura', values)}
