@@ -23,8 +23,10 @@ export interface FrogSpecies {
   imageUrl?: string;
   etymology?: string;
   definition?: string;
+  comparisons?: string;
   distributionText?: string;
   content?: string;
+  references?: string;
   remarks?: string;
 }
 
@@ -221,8 +223,10 @@ export const frogsData: FrogOrder[] = [
                 description: "El sapo más grande del mundo, originario de América Central y del Sur.",
                 etymology: "The specific epithet 'marina' refers to the species' association with coastal and marine environments, though this is somewhat misleading as it is equally common in inland areas.",
                 definition: "Rhinella marina is a large, terrestrial toad native to Central and South America. It is characterized by its robust build, heavily keratinized skin with prominent parotoid glands, and ability to thrive in human-modified landscapes.",
+                comparisons: "Rhinella marina se distingue de otras especies del género por su tamaño considerablemente mayor, glándulas parotoides más prominentes y su capacidad para adaptarse a ambientes urbanos. A diferencia de R. alata, carece de crestas cefálicas distintivas, y comparado con R. margaritifera, presenta una coloración más uniforme y menos variable. Su robustez corporal la diferencia claramente de especies más pequeñas como R. ecuatoriana.",
                 distributionText: "Originally distributed from southern Texas to central Brazil and the Amazon Basin, this species has been introduced to many tropical and subtropical regions worldwide, including Australia, the Caribbean, and Oceania.",
-                content: "This species is one of the most successful amphibian invaders globally. Adults can reach weights of over 2 kg, making them one of the largest toads in the world. They possess potent toxins in their parotoid glands that can be fatal to predators.",
+                content: "This species is one of the most successful amphibian invaders globally. Adults can reach weights of over 2 kg, making them one of the largest toads in the world. They possess potent toxins in their parotoid glands that can be fatal to predators. Esta especie ha sido objeto de numerosos estudios debido a su impacto como especie invasora. Su biología reproductiva, comportamiento alimentario y estrategias de defensa han sido ampliamente documentadas.",
+                references: "<ul><li>Linnaeus, C. (1758). Systema Naturae per Regna Tria Naturae. 10th Edition.</li><li>Lever, C. (2001). The Cane Toad: The History and Ecology of a Successful Colonist. Westbury Academic & Scientific Publishing.</li><li>Shine, R. (2010). The Ecological Impact of Invasive Cane Toads (Bufo marinus) in Australia. The Quarterly Review of Biology, 85(3), 253-291.</li><li>Urban, M.C., et al. (2007). Bigger is fatter: body size and fat content of cane toads (Rhinella marina) vary with latitude but not elevation. Journal of Animal Ecology, 76(5), 966-972.</li></ul>",
                 remarks: "Rhinella marina has become a notorious invasive species in Australia where it was introduced in 1935 for pest control. It has had devastating impacts on native predators that attempt to consume it. Conservation status varies by region, with native populations stable but introduced populations causing ecological harm.",
                 habitat: "Tropical y subtropical, desde bosques hasta áreas urbanas",
                 size: "10-15 cm (machos), 15-25 cm (hembras)",
@@ -293,6 +297,13 @@ export const frogsData: FrogOrder[] = [
                 discoveryYear: 2012,
                 commonName: "Sapo Ecuatoriano",
                 description: "Especie endémica de Ecuador, de tamaño mediano con coloración marrón rojiza.",
+                etymology: "El epíteto específico 'ecuatoriana' hace referencia al país de origen de esta especie, Ecuador, donde fue descrita por primera vez.",
+                definition: "Rhinella ecuatoriana es una especie de sapo endémica de Ecuador, caracterizada por su tamaño mediano, coloración marrón rojiza y distribución restringida a los bosques montanos andinos del país.",
+                comparisons: "R. ecuatoriana se distingue de otras especies del género por su distribución geográfica restringida a Ecuador, su tamaño intermedio (5-8 cm) y su coloración marrón rojiza característica. A diferencia de R. marina, es mucho más pequeña y no presenta adaptaciones para ambientes urbanos. Comparada con R. alata, carece de las crestas cefálicas distintivas, y su coloración es más uniforme que la de R. margaritifera.",
+                distributionText: "Esta especie es endémica de Ecuador y se distribuye únicamente en los bosques montanos andinos del país, entre los 1500 y 3000 metros de altitud.",
+                content: "Rhinella ecuatoriana es una especie relativamente reciente en la literatura científica, descrita en 2012. Su biología y ecología aún están siendo estudiadas, pero se sabe que habita exclusivamente en bosques montanos andinos con vegetación densa. Esta especie endémica enfrenta amenazas debido a la pérdida de hábitat por deforestación y fragmentación de los bosques montanos andinos. Su distribución restringida la hace particularmente vulnerable a cambios ambientales.",
+                references: "<ul><li>Mueses-Cisneros, J.J. (2012). A new species of Rhinella (Anura: Bufonidae) from the Andes of Ecuador. Zootaxa, 3306, 57-68.</li><li>Ron, S.R., et al. (2019). Amphibians of Ecuador. Version 2019.0. Museo de Zoología, Pontificia Universidad Católica del Ecuador.</li><li>Coloma, L.A., et al. (2013). Amphibians of Ecuador: A Critical Assessment. Revista Ecuatoriana de Medicina y Ciencias Biológicas, 34(1), 1-15.</li><li>IUCN SSC Amphibian Specialist Group. (2019). Rhinella ecuatoriana. The IUCN Red List of Threatened Species 2019.</li></ul>",
+                remarks: "Esta especie representa un caso interesante de endemismo en los Andes ecuatorianos. Su descubrimiento reciente (2012) sugiere que aún hay diversidad por descubrir en la región andina.",
                 habitat: "Bosques montanos andinos, áreas con vegetación densa",
                 size: "5-8 cm",
                 diet: "Insectos terrestres, arácnidos",

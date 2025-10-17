@@ -263,7 +263,7 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
         </div>
       </div>
 
-      <div className="px-6 overflow-y-auto flex-1">
+      <div className="px-6 overflow-y-auto flex-1 filters-panel-scroll">
         <Accordion type="multiple" className="w-full">
           {/* Provincia */}
           <AccordionItem value="provincia">
@@ -304,7 +304,11 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
                       variant={isSelected ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => handleCategoricalChange('provincia', value)}
-                      className="w-full text-xs px-2 py-1 h-auto min-h-[32px] justify-center text-center"
+                      className="w-full text-xs px-2 py-1 h-auto min-h-[32px] justify-center text-center rounded-none"
+                      style={{
+                        borderColor: isSelected ? undefined : '#e8e8e8',
+                        color: isSelected ? undefined : '#454545'
+                      }}
                     >
                       {province}
                     </Button>
@@ -335,7 +339,11 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
                       variant={isSelected ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => handleCategoricalChange('listaRoja', status.value)}
-                      className="w-full text-xs px-2 py-1 h-auto min-h-[32px] justify-center text-center"
+                      className="w-full text-xs px-2 py-1 h-auto min-h-[32px] justify-center text-center rounded-none"
+                      style={{
+                        borderColor: isSelected ? undefined : '#e8e8e8',
+                        color: isSelected ? undefined : '#454545'
+                      }}
                     >
                       {status.label}
                     </Button>
@@ -361,7 +369,11 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
                       variant={isSelected ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => handleCategoricalChange('endemismo', option.value)}
-                      className="w-full text-xs px-2 py-1 h-auto min-h-[32px] justify-center text-center"
+                      className="w-full text-xs px-2 py-1 h-auto min-h-[32px] justify-center text-center rounded-none"
+                      style={{
+                        borderColor: isSelected ? undefined : '#e8e8e8',
+                        color: isSelected ? undefined : '#454545'
+                      }}
                     >
                       {option.label}
                     </Button>
@@ -392,7 +404,11 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
                       variant={isSelected ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => handleCategoricalChange('pisosAltitudinales', floor.value)}
-                      className="w-full text-xs px-2 py-1 h-auto min-h-[32px] justify-center text-center"
+                      className="w-full text-xs px-2 py-1 h-auto min-h-[32px] justify-center text-center rounded-none"
+                      style={{
+                        borderColor: isSelected ? undefined : '#e8e8e8',
+                        color: isSelected ? undefined : '#454545'
+                      }}
                     >
                       {floor.label}
                     </Button>
@@ -525,7 +541,11 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
                       variant={isSelected ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => handleCategoricalChange('ecosistemas', ecosystem.value)}
-                      className="w-full text-xs px-2 py-1 h-auto min-h-[32px] justify-center text-center whitespace-normal break-words"
+                      className="w-full text-xs px-2 py-1 h-auto min-h-[32px] justify-center text-center whitespace-normal break-words rounded-none"
+                      style={{
+                        borderColor: isSelected ? undefined : '#e8e8e8',
+                        color: isSelected ? undefined : '#454545'
+                      }}
                     >
                       {ecosystem.label}
                     </Button>
@@ -564,7 +584,11 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
                       variant={isSelected ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => handleCategoricalChange('regionesBiogeograficas', region.value)}
-                      className="w-full text-xs px-2 py-1 h-auto min-h-[32px] justify-center text-center"
+                      className="w-full text-xs px-2 py-1 h-auto min-h-[32px] justify-center text-center rounded-none"
+                      style={{
+                        borderColor: isSelected ? undefined : '#e8e8e8',
+                        color: isSelected ? undefined : '#454545'
+                      }}
                     >
                       {region.label}
                     </Button>
@@ -594,7 +618,11 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
                       variant={isSelected ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => handleCategoricalChange('reservasBiosfera', option.value)}
-                      className="w-full text-xs px-2 py-1 h-auto min-h-[32px] justify-center text-center whitespace-normal break-words"
+                      className="w-full text-xs px-2 py-1 h-auto min-h-[32px] justify-center text-center whitespace-normal break-words rounded-none"
+                      style={{
+                        borderColor: isSelected ? undefined : '#e8e8e8',
+                        color: isSelected ? undefined : '#454545'
+                      }}
                     >
                       {option.label}
                     </Button>
@@ -710,7 +738,11 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
                       variant={isSelected ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => handleCategoricalChange('bosquesProtegidos', option.value)}
-                      className="w-full text-xs px-2 py-1 h-auto min-h-[32px] justify-center text-center whitespace-normal break-words"
+                      className="w-full text-xs px-2 py-1 h-auto min-h-[32px] justify-center text-center whitespace-normal break-words rounded-none"
+                      style={{
+                        borderColor: isSelected ? undefined : '#e8e8e8',
+                        color: isSelected ? undefined : '#454545'
+                      }}
                     >
                       {option.label}
                     </Button>
@@ -774,7 +806,11 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
                       variant={isSelected ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => handleCategoricalChange('areasProtegidas', option.value)}
-                      className="w-full text-xs px-2 py-1 h-auto min-h-[32px] justify-center text-center whitespace-normal break-words"
+                      className="w-full text-xs px-2 py-1 h-auto min-h-[32px] justify-center text-center whitespace-normal break-words rounded-none"
+                      style={{
+                        borderColor: isSelected ? undefined : '#e8e8e8',
+                        color: isSelected ? undefined : '#454545'
+                      }}
                     >
                       {option.label}
                     </Button>

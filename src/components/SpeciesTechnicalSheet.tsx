@@ -19,8 +19,12 @@ interface SpeciesTechnicalSheetProps {
   identification?: string;
   comparisons?: string;
   naturalHistory?: string;
+  content?: string;
   distribution?: string;
   conservation?: string;
+  references?: string;
+  isEndemic?: boolean;
+  redListStatus?: string;
   altitudinalRange?: {
     min: number;
     max: number;
@@ -39,8 +43,12 @@ export default function SpeciesTechnicalSheet({
   identification,
   comparisons,
   naturalHistory,
+  content,
   distribution,
   conservation,
+  references,
+  isEndemic,
+  redListStatus,
   altitudinalRange,
   climaticFloors
 }: SpeciesTechnicalSheetProps) {
@@ -212,6 +220,29 @@ export default function SpeciesTechnicalSheet({
                 </section>
               )}
 
+              {content && (
+                <section>
+                <h3 className="mb-4" style={{
+
+                  color: '#333333',
+                  fontSize: '16px',
+                  padding: '8px 0px',
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif',
+                  fontWeight: 'bold'
+                }}>
+                  Contenido
+                </h3>
+                  <div className="text-justify" style={{
+                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif',
+                    color: '#444444',
+                    fontSize: '16px',
+                    lineHeight: '1.6'
+                  }}>
+                    <div dangerouslySetInnerHTML={{ __html: content }} />
+                  </div>
+                </section>
+              )}
+
               {distribution && (
                 <section>
                 <h3 className="mb-4" style={{
@@ -257,14 +288,8 @@ export default function SpeciesTechnicalSheet({
                   </div>
                 </section>
               )}
-            </div>
-          </div>
 
-          {/* Columna derecha - Sidebar fijo */}
-          <div className="w-80 border-l sticky top-0 h-screen overflow-y-auto">
-            <div style={{ padding: '25px 30px' }} className="space-y-8">
-              {/* Barra de pisos climáticos */}
-              {altitudinalRange && climaticFloors && (
+              {references && (
                 <section>
                 <h3 className="mb-4" style={{
 
@@ -274,14 +299,119 @@ export default function SpeciesTechnicalSheet({
                   fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif',
                   fontWeight: 'bold'
                 }}>
-                    Distribución altitudinal
-                  </h3>
-                  <ClimaticFloorChart
-                    altitudinalRange={altitudinalRange}
-                    climaticFloors={climaticFloors}
-                  />
+                  Referencias
+                </h3>
+                  <div className="text-justify" style={{
+                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif',
+                    color: '#444444',
+                    fontSize: '16px',
+                    lineHeight: '1.6'
+                  }}>
+                    <div dangerouslySetInnerHTML={{ __html: references }} />
+                  </div>
                 </section>
               )}
+            </div>
+          </div>
+
+          {/* Columna derecha - Sidebar fijo */}
+          <div className="w-80 border-l sticky top-0 h-screen overflow-y-auto">
+            <div style={{ padding: '25px 30px' }} className="space-y-8">
+              {/* Información General */}
+              <section>
+                <h3 className="mb-4" style={{
+                  color: '#333333',
+                  fontSize: '16px',
+                  padding: '8px 0px',
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif',
+                  fontWeight: 'bold'
+                }}>
+                  Información General
+                </h3>
+                
+                <div className="border rounded-none p-4" style={{ backgroundColor: '#f9f9f9', borderColor: '#dddddd' }}>
+                  {/* Endemismo */}
+                  <div className="mb-4">
+                    <h4 className="mb-2" style={{
+                      color: '#333333',
+                      fontSize: '14px',
+                      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif',
+                      fontWeight: '600'
+                    }}>
+                      Endemismo
+                    </h4>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-medium" style={{ color: isEndemic ? '#16a34a' : '#6b7280' }}>
+                        {isEndemic ? 'Endémica' : 'No endémica'}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Lista Roja */}
+                  {redListStatus && (
+                    <div className="mb-4">
+                      <h4 className="mb-2" style={{
+                        color: '#333333',
+                        fontSize: '14px',
+                        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif',
+                        fontWeight: '600'
+                      }}>
+                        Lista Roja IUCN
+                      </h4>
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-mono px-2 py-1 rounded-none" style={{ 
+                          backgroundColor: redListStatus === 'LC' ? '#f8f9fa' : 
+                                          redListStatus === 'NT' ? '#f1f3f4' :
+                                          redListStatus === 'VU' ? '#e8eaed' :
+                                          redListStatus === 'EN' ? '#dadce0' :
+                                          redListStatus === 'CR' ? '#bdc1c6' : '#f8f9fa',
+                          color: redListStatus === 'LC' ? '#5f6368' : 
+                                redListStatus === 'NT' ? '#5f6368' :
+                                redListStatus === 'VU' ? '#5f6368' :
+                                redListStatus === 'EN' ? '#3c4043' :
+                                redListStatus === 'CR' ? '#202124' : '#5f6368',
+                          border: '1px solid',
+                          borderColor: redListStatus === 'LC' ? '#e8eaed' : 
+                                     redListStatus === 'NT' ? '#dadce0' :
+                                     redListStatus === 'VU' ? '#bdc1c6' :
+                                     redListStatus === 'EN' ? '#9aa0a6' :
+                                     redListStatus === 'CR' ? '#5f6368' : '#e8eaed'
+                        }}>
+                          {redListStatus}
+                        </span>
+                        <span className="text-sm" style={{ color: '#666666' }}>
+                          {redListStatus === 'LC' ? 'Preocupación Menor' :
+                           redListStatus === 'NT' ? 'Casi Amenazada' :
+                           redListStatus === 'VU' ? 'Vulnerable' :
+                           redListStatus === 'EN' ? 'En Peligro' :
+                           redListStatus === 'CR' ? 'Críticamente Amenazada' :
+                           redListStatus === 'EW' ? 'Extinta en Estado Silvestre' :
+                           redListStatus === 'EX' ? 'Extinta' :
+                           redListStatus === 'DD' ? 'Datos Deficientes' : redListStatus}
+                        </span>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Distribución altitudinal */}
+                  {altitudinalRange && climaticFloors && (
+                    <div>
+                      <h4 className="mb-2" style={{
+                        color: '#333333',
+                        fontSize: '14px',
+                        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif',
+                        fontWeight: '600'
+                      }}>
+                        Distribución altitudinal
+                      </h4>
+                      <ClimaticFloorChart
+                        altitudinalRange={altitudinalRange}
+                        climaticFloors={climaticFloors}
+                      />
+                    </div>
+                  )}
+                </div>
+              </section>
 
               {/* Recursos */}
               <section>
@@ -296,9 +426,9 @@ export default function SpeciesTechnicalSheet({
                   Recursos
                 </h3>
                 <div className="space-y-4">
-                  <div className="border rounded-lg p-4 transition-colors cursor-pointer hover:bg-gray-25" style={{ backgroundColor: '#f9f9f9', borderColor: '#dddddd' }}>
+                  <div className="border rounded-none p-4 transition-colors cursor-pointer hover:bg-gray-25" style={{ backgroundColor: '#f9f9f9', borderColor: '#dddddd' }}>
                     <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#f5f5f5' }}>
+                      <div className="w-10 h-10 rounded-none flex items-center justify-center" style={{ backgroundColor: '#f5f5f5' }}>
                         <Camera className="w-5 h-5" style={{ color: '#333333' }} />
                       </div>
                       <div>
@@ -308,9 +438,9 @@ export default function SpeciesTechnicalSheet({
                     </div>
                   </div>
 
-                  <div className="border rounded-lg p-4 transition-colors cursor-pointer hover:bg-gray-25" style={{ backgroundColor: '#f9f9f9', borderColor: '#dddddd' }}>
+                  <div className="border rounded-none p-4 transition-colors cursor-pointer hover:bg-gray-25" style={{ backgroundColor: '#f9f9f9', borderColor: '#dddddd' }}>
                     <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#f5f5f5' }}>
+                      <div className="w-10 h-10 rounded-none flex items-center justify-center" style={{ backgroundColor: '#f5f5f5' }}>
                         <Volume2 className="w-5 h-5" style={{ color: '#333333' }} />
                       </div>
                       <div>
@@ -320,9 +450,9 @@ export default function SpeciesTechnicalSheet({
                     </div>
                   </div>
 
-                  <div className="border rounded-lg p-4 transition-colors cursor-pointer hover:bg-gray-25" style={{ backgroundColor: '#f9f9f9', borderColor: '#dddddd' }}>
+                  <div className="border rounded-none p-4 transition-colors cursor-pointer hover:bg-gray-25" style={{ backgroundColor: '#f9f9f9', borderColor: '#dddddd' }}>
                     <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#f5f5f5' }}>
+                      <div className="w-10 h-10 rounded-none flex items-center justify-center" style={{ backgroundColor: '#f5f5f5' }}>
                         <MapPin className="w-5 h-5" style={{ color: '#333333' }} />
                       </div>
                       <div>
@@ -352,7 +482,7 @@ export default function SpeciesTechnicalSheet({
                       <TooltipTrigger asChild>
                         <Button
                           variant="outline"
-                          className="h-auto p-2 hover:bg-gray-50 group border"
+                          className="h-auto p-2 hover:bg-gray-50 group border rounded-none"
                           style={{ backgroundColor: '#f9f9f9' }}
                           asChild
                         >
@@ -377,7 +507,7 @@ export default function SpeciesTechnicalSheet({
                       <TooltipTrigger asChild>
                         <Button
                           variant="outline"
-                          className="h-auto p-2 hover:bg-gray-50 group border"
+                          className="h-auto p-2 hover:bg-gray-50 group border rounded-none"
                           style={{ backgroundColor: '#f9f9f9' }}
                           asChild
                         >
@@ -402,7 +532,7 @@ export default function SpeciesTechnicalSheet({
                       <TooltipTrigger asChild>
                         <Button
                           variant="outline"
-                          className="h-auto p-2 hover:bg-gray-50 group border"
+                          className="h-auto p-2 hover:bg-gray-50 group border rounded-none"
                           style={{ backgroundColor: '#f9f9f9' }}
                           asChild
                         >
@@ -427,7 +557,7 @@ export default function SpeciesTechnicalSheet({
                       <TooltipTrigger asChild>
                         <Button
                           variant="outline"
-                          className="h-auto p-2 hover:bg-gray-50 group border"
+                          className="h-auto p-2 hover:bg-gray-50 group border rounded-none"
                           style={{ backgroundColor: '#f9f9f9' }}
                           asChild
                         >
@@ -452,7 +582,7 @@ export default function SpeciesTechnicalSheet({
                       <TooltipTrigger asChild>
                         <Button
                           variant="outline"
-                          className="h-auto p-2 hover:bg-gray-50 group border"
+                          className="h-auto p-2 hover:bg-gray-50 group border rounded-none"
                           style={{ backgroundColor: '#f9f9f9' }}
                           asChild
                         >
@@ -477,7 +607,7 @@ export default function SpeciesTechnicalSheet({
                       <TooltipTrigger asChild>
                         <Button
                           variant="outline"
-                          className="h-auto p-2 hover:bg-gray-50 group border"
+                          className="h-auto p-2 hover:bg-gray-50 group border rounded-none"
                           style={{ backgroundColor: '#f9f9f9' }}
                           asChild
                         >

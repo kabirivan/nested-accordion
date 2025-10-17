@@ -294,15 +294,15 @@ export default function FrogAccordion({ orders }: FrogAccordionProps) {
           </TabsContent>
         </Tabs>
 
-        {/* Botón flotante de Guía de Interpretación */}
-        <Button
+        {/* Botón flotante de Guía de Interpretación - Oculto temporalmente */}
+        {/* <Button
           onClick={() => setShowGuide(true)}
           size="icon"
           className="fixed bottom-8 right-8 h-16 w-16 rounded-full shadow-lg hover:scale-110 transition-transform z-40"
           title="Guía de Interpretación"
         >
           <QuestionMarkCircleIcon className="h-8 w-8" />
-        </Button>
+        </Button> */}
       </main>
 
       {/* Modal de Guía de Interpretación */}

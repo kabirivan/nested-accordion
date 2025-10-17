@@ -3,7 +3,6 @@
 import { useParams, useRouter } from 'next/navigation';
 import { frogsData } from '@/data/frogsData';
 import SpeciesContent from '@/components/SpeciesContent';
-import Breadcrumbs from '@/components/Breadcrumbs';
 
 export default function SpeciesPage() {
   const params = useParams();
@@ -51,27 +50,6 @@ export default function SpeciesPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header con breadcrumbs */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <Breadcrumbs
-            items={[
-              { label: 'Inicio', href: '/' },
-              { label: foundOrder?.name || 'Orden', href: foundOrder ? `/order/${foundOrder.id}` : undefined },
-              { 
-                label: foundFamily?.name || 'Familia',
-                href: foundFamily ? `/family/${foundFamily.id}` : undefined
-              },
-              { 
-                label: foundGenus?.name || 'Género',
-                href: foundGenus ? `/genus/${foundGenus.id}` : undefined
-              },
-              { label: foundSpecies.scientificName }
-            ]}
-          />
-        </div>
-      </header>
-
       {/* Contenido de la especie */}
       <main style={{ backgroundColor: '#f5f5f5' }} className="min-h-screen">
         <div className="max-w-7xl mx-auto px-0 sm:px-0 lg:px-0">

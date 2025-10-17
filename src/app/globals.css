@@ -101,6 +101,25 @@ body {
   background: #a8a8a8;
 }
 
+/* Scrollbar más delgado para el panel de filtros */
+.filters-panel-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.filters-panel-scroll::-webkit-scrollbar-track {
+  background: #f8f9fa;
+  border-radius: 2px;
+}
+
+.filters-panel-scroll::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 2px;
+}
+
+.filters-panel-scroll::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
 /* Efectos hover mejorados */
 .hover-lift {
   transition: transform 0.2s ease-in-out;
