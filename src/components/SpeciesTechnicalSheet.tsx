@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
 import { Camera, Volume2, MapPin } from 'lucide-react';
-import ClimaticFloorChart from './ClimaticFloorChart';
 
 interface SpeciesTechnicalSheetProps {
   scientificName: string;
@@ -25,11 +24,6 @@ interface SpeciesTechnicalSheetProps {
   references?: string;
   isEndemic?: boolean;
   redListStatus?: string;
-  altitudinalRange?: {
-    min: number;
-    max: number;
-  };
-  climaticFloors?: string[];
 }
 
 export default function SpeciesTechnicalSheet({
@@ -48,9 +42,7 @@ export default function SpeciesTechnicalSheet({
   conservation,
   references,
   isEndemic,
-  redListStatus,
-  altitudinalRange,
-  climaticFloors
+  redListStatus
 }: SpeciesTechnicalSheetProps) {
   return (
     <Card className="bg-white rounded-none border-0 flex flex-col p-0 gap-0 overflow-hidden" style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', borderRadius: 0, border: 'none' }}>
@@ -392,24 +384,6 @@ export default function SpeciesTechnicalSheet({
                       </div>
                     </div>
                   )}
-
-                  {/* Distribución altitudinal */}
-                  {altitudinalRange && climaticFloors && (
-                    <div>
-                      <h4 className="mb-2" style={{
-                        color: '#333333',
-                        fontSize: '14px',
-                        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif',
-                        fontWeight: '600'
-                      }}>
-                        Distribución altitudinal
-                      </h4>
-                      <ClimaticFloorChart
-                        altitudinalRange={altitudinalRange}
-                        climaticFloors={climaticFloors}
-                      />
-                    </div>
-                  )}
                 </div>
               </section>
 
@@ -426,39 +400,21 @@ export default function SpeciesTechnicalSheet({
                   Recursos
                 </h3>
                 <div className="space-y-4">
-                  <div className="border rounded-none p-4 transition-colors cursor-pointer hover:bg-gray-25" style={{ backgroundColor: '#f9f9f9', borderColor: '#dddddd' }}>
-                    <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-none flex items-center justify-center" style={{ backgroundColor: '#f5f5f5' }}>
-                        <Camera className="w-5 h-5" style={{ color: '#333333' }} />
-                      </div>
-                      <div>
-                        <p className="font-semibold" style={{ color: '#333333' }}>Fotos</p>
-                        <p className="text-sm" style={{ color: '#666666' }}>Galería fotográfica</p>
-                      </div>
+                  <div className="border rounded-none p-4 transition-colors cursor-pointer hover:bg-gray-25 flex items-center justify-center" style={{ backgroundColor: '#f9f9f9', borderColor: '#dddddd' }}>
+                    <div className="w-10 h-10 rounded-none flex items-center justify-center" style={{ backgroundColor: '#f5f5f5' }}>
+                      <Camera className="w-5 h-5" style={{ color: '#333333' }} />
                     </div>
                   </div>
 
-                  <div className="border rounded-none p-4 transition-colors cursor-pointer hover:bg-gray-25" style={{ backgroundColor: '#f9f9f9', borderColor: '#dddddd' }}>
-                    <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-none flex items-center justify-center" style={{ backgroundColor: '#f5f5f5' }}>
-                        <Volume2 className="w-5 h-5" style={{ color: '#333333' }} />
-                      </div>
-                      <div>
-                        <p className="font-semibold" style={{ color: '#333333' }}>Sonidos</p>
-                        <p className="text-sm" style={{ color: '#666666' }}>Grabaciones de audio</p>
-                      </div>
+                  <div className="border rounded-none p-4 transition-colors cursor-pointer hover:bg-gray-25 flex items-center justify-center" style={{ backgroundColor: '#f9f9f9', borderColor: '#dddddd' }}>
+                    <div className="w-10 h-10 rounded-none flex items-center justify-center" style={{ backgroundColor: '#f5f5f5' }}>
+                      <Volume2 className="w-5 h-5" style={{ color: '#333333' }} />
                     </div>
                   </div>
 
-                  <div className="border rounded-none p-4 transition-colors cursor-pointer hover:bg-gray-25" style={{ backgroundColor: '#f9f9f9', borderColor: '#dddddd' }}>
-                    <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-none flex items-center justify-center" style={{ backgroundColor: '#f5f5f5' }}>
-                        <MapPin className="w-5 h-5" style={{ color: '#333333' }} />
-                      </div>
-                      <div>
-                        <p className="font-semibold" style={{ color: '#333333' }}>Mapa</p>
-                        <p className="text-sm" style={{ color: '#666666' }}>Distribución geográfica</p>
-                      </div>
+                  <div className="border rounded-none p-4 transition-colors cursor-pointer hover:bg-gray-25 flex items-center justify-center" style={{ backgroundColor: '#f9f9f9', borderColor: '#dddddd' }}>
+                    <div className="w-10 h-10 rounded-none flex items-center justify-center" style={{ backgroundColor: '#f5f5f5' }}>
+                      <MapPin className="w-5 h-5" style={{ color: '#333333' }} />
                     </div>
                   </div>
                 </div>
@@ -476,7 +432,7 @@ export default function SpeciesTechnicalSheet({
                 }}>
                   Fuentes externas
                 </h3>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-1 gap-2">
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger asChild>

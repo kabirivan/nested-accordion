@@ -24,8 +24,8 @@ export default function SpeciesContent({ species }: SpeciesContentProps) {
           naturalHistory={species.content}
           distribution={species.distributionText}
           conservation={`Estado: ${species.redListStatus}`}
-          altitudinalRange={species.altitudinalRange}
-          climaticFloors={species.climaticFloors}
+          isEndemic={species.isEndemic}
+          redListStatus={species.redListStatus}
         />
       </div>
     </div>
