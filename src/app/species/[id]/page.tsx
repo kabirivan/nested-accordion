@@ -53,7 +53,12 @@ export default function SpeciesPage() {
       {/* Contenido de la especie */}
       <main style={{ backgroundColor: '#f5f5f5' }} className="min-h-screen">
         <div className="max-w-7xl mx-auto px-0 sm:px-0 lg:px-0">
-          <SpeciesContent species={foundSpecies} />
+          <SpeciesContent 
+            species={foundSpecies} 
+            order={foundOrder}
+            family={foundFamily}
+            genus={foundGenus}
+          />
         </div>
       </main>
     </div>

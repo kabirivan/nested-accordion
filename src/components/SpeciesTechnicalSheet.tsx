@@ -1,19 +1,23 @@
 'use client';
 
+import Link from 'next/link';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
 import { Camera, Volume2, MapPin } from 'lucide-react';
+import ClimaticFloorChart from './ClimaticFloorChart';
 
 interface SpeciesTechnicalSheetProps {
   scientificName: string;
   collectors: string;
   commonName: string;
   order: string;
+  orderId: string;
   family: string;
+  familyId: string;
   genus: string;
+  genusId: string;
   etymology?: string;
   identification?: string;
   comparisons?: string;
@@ -24,6 +28,11 @@ interface SpeciesTechnicalSheetProps {
   references?: string;
   isEndemic?: boolean;
   redListStatus?: string;
+  altitudinalRange?: {
+    min: number;
+    max: number;
+  };
+  climaticFloors?: string[];
 }
 
 export default function SpeciesTechnicalSheet({
@@ -31,8 +40,11 @@ export default function SpeciesTechnicalSheet({
   collectors,
   commonName,
   order,
+  orderId,
   family,
+  familyId,
   genus,
+  genusId,
   etymology,
   identification,
   comparisons,
@@ -42,75 +54,86 @@ export default function SpeciesTechnicalSheet({
   conservation,
   references,
   isEndemic,
-  redListStatus
+  redListStatus,
+  altitudinalRange,
+  climaticFloors
 }: SpeciesTechnicalSheetProps) {
   return (
     <Card className="bg-white rounded-none border-0 flex flex-col p-0 gap-0 overflow-hidden" style={{ boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', borderRadius: 0, border: 'none' }}>
       {/* Encabezado */}
-      <CardHeader className="text-gray-900 text-center sticky top-0 z-30" style={{ padding: '30px', backgroundColor: '#ffffff' }}>
-        <div className="space-y-4">
-          <div className="flex items-center justify-center gap-4">
-            <h1 className="text-3xl font-bold italic" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif' }}>
-            {scientificName}
-          </h1>
-            <p className="text-sm" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif', color: '#666666' }}>
+      <CardHeader className="text-gray-900 text-center sticky top-0 z-30" style={{ padding: '0', backgroundColor: '#ffffff' }}>
+        <div className="space-y-4" style={{ padding: '40px 30px 30px' }}>
+          {/* Título principal - Jerarquía taxonómica completa */}
+          <div className="flex items-baseline justify-center gap-2 flex-wrap">
+            {/* Orden - PEQUEÑO con link */}
+            <Link 
+              href={`/order/${orderId}`}
+              className="text-sm font-medium hover:underline transition-all" 
+              style={{ 
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif',
+                color: '#666666'
+              }}
+            >
+              {order}
+            </Link>
+            <span className="text-sm" style={{ color: '#cccccc', fontWeight: '300' }}>|</span>
+            
+            {/* Familia - PEQUEÑO con link */}
+            <Link 
+              href={`/family/${familyId}`}
+              className="text-sm font-medium hover:underline transition-all" 
+              style={{ 
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif',
+                color: '#666666'
+              }}
+            >
+              {family}
+            </Link>
+            <span className="text-sm" style={{ color: '#cccccc', fontWeight: '300' }}>|</span>
+            
+            {/* Género - PEQUEÑO e itálica con link */}
+            <Link 
+              href={`/genus/${genusId}`}
+              className="text-sm font-medium italic hover:underline transition-all" 
+              style={{ 
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif',
+                color: '#666666'
+              }}
+            >
+              {genus}
+            </Link>
+            <span className="text-sm" style={{ color: '#cccccc', fontWeight: '300' }}>|</span>
+            
+            {/* Especie - GRANDE, destacado, en cursiva (no clicable) */}
+            <h1 className="text-4xl font-bold italic" style={{ 
+              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif',
+              color: '#1a1a1a',
+              letterSpacing: '-0.02em'
+            }}>
+              {scientificName}
+            </h1>
+            
+            {/* Descriptor y año - MEDIANO */}
+            <span className="text-lg font-normal" style={{ 
+              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif', 
+              color: '#888888'
+            }}>
               ({collectors})
-          </p>
+            </span>
           </div>
-          <p className="text-xl font-semibold" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif', color: '#333333' }}>
+
+          {/* Nombre común */}
+          <p className="text-xl font-semibold" style={{ 
+            fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif', 
+            color: '#555555',
+            marginTop: '12px'
+          }}>
             {commonName}
           </p>
-          <Separator className="my-4 bg-gray-300" />
-          {/* Breadcrumb de taxonomía */}
-          <Breadcrumb className="flex justify-center">
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink 
-                  href="#" 
-                  className="text-xs hover:text-gray-900 transition-colors"
-                  style={{ color: '#666666', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif' }}
-                >
-                  {order}
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator className="text-gray-400">
-                →
-              </BreadcrumbSeparator>
-              <BreadcrumbItem>
-                <BreadcrumbLink 
-                  href="#" 
-                  className="text-xs hover:text-gray-900 transition-colors"
-                  style={{ color: '#666666', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif' }}
-                >
-                  {family}
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator className="text-gray-400">
-                →
-              </BreadcrumbSeparator>
-              <BreadcrumbItem>
-                <BreadcrumbLink 
-                  href="#" 
-                  className="text-xs hover:text-white transition-colors italic"
-                  style={{ color: '#999999', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif' }}
-                >
-                  {genus}
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator className="text-gray-400">
-                →
-              </BreadcrumbSeparator>
-              <BreadcrumbItem>
-                <BreadcrumbPage 
-                  className="text-xs italic"
-                  style={{ color: '#333333', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif' }}
-                >
-                  {scientificName}
-                </BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
         </div>
+        
+        {/* Línea divisoria horizontal - extremo a extremo */}
+        <Separator className="bg-gray-200" style={{ margin: '0' }} />
       </CardHeader>
 
       {/* Cuerpo - Layout con sidebar fijo y contenido con scroll */}
@@ -307,8 +330,29 @@ export default function SpeciesTechnicalSheet({
           </div>
 
           {/* Columna derecha - Sidebar fijo */}
-          <div className="w-80 border-l sticky top-0 h-screen overflow-y-auto">
+          <div className="w-50 border-l sticky top-0 h-screen overflow-y-auto">
             <div style={{ padding: '25px 30px' }} className="space-y-8">
+              {/* Distribución Altitudinal */}
+              {altitudinalRange && climaticFloors && (
+                <section>
+                  <h3 className="mb-4" style={{
+                    color: '#333333',
+                    fontSize: '16px',
+                    padding: '8px 0px',
+                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif',
+                    fontWeight: 'bold'
+                  }}>
+                    Distribución altitudinal
+                  </h3>
+                  <div className="border rounded-none p-4" style={{ backgroundColor: '#f9f9f9', borderColor: '#dddddd' }}>
+                    <ClimaticFloorChart
+                      altitudinalRange={altitudinalRange}
+                      climaticFloors={climaticFloors}
+                    />
+                  </div>
+                </section>
+              )}
+
               {/* Información General */}
               <section>
                 <h3 className="mb-4" style={{
@@ -321,68 +365,72 @@ export default function SpeciesTechnicalSheet({
                   Información General
                 </h3>
                 
-                <div className="border rounded-none p-4" style={{ backgroundColor: '#f9f9f9', borderColor: '#dddddd' }}>
+                <div className="grid grid-cols-1 gap-2">
                   {/* Endemismo */}
-                  <div className="mb-4">
+                  <div className="border rounded-none p-2 flex flex-col items-center justify-center aspect-square" style={{ backgroundColor: '#f9f9f9', borderColor: '#dddddd' }}>
                     <h4 className="mb-2" style={{
-                      color: '#333333',
-                      fontSize: '14px',
+                      color: '#666666',
+                      fontSize: '12px',
                       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif',
                       fontWeight: '600'
                     }}>
                       Endemismo
                     </h4>
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium" style={{ color: isEndemic ? '#16a34a' : '#6b7280' }}>
-                        {isEndemic ? 'Endémica' : 'No endémica'}
-                      </span>
-                    </div>
+                    <span className="text-sm font-semibold text-center" style={{ color: isEndemic ? '#16a34a' : '#6b7280' }}>
+                      {isEndemic ? 'Endémica' : 'No endémica'}
+                    </span>
                   </div>
 
                   {/* Lista Roja */}
                   {redListStatus && (
-                    <div className="mb-4">
-                      <h4 className="mb-2" style={{
-                        color: '#333333',
-                        fontSize: '14px',
-                        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif',
-                        fontWeight: '600'
-                      }}>
-                        Lista Roja IUCN
-                      </h4>
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs font-mono px-2 py-1 rounded-none" style={{ 
-                          backgroundColor: redListStatus === 'LC' ? '#f8f9fa' : 
-                                          redListStatus === 'NT' ? '#f1f3f4' :
-                                          redListStatus === 'VU' ? '#e8eaed' :
-                                          redListStatus === 'EN' ? '#dadce0' :
-                                          redListStatus === 'CR' ? '#bdc1c6' : '#f8f9fa',
-                          color: redListStatus === 'LC' ? '#5f6368' : 
-                                redListStatus === 'NT' ? '#5f6368' :
-                                redListStatus === 'VU' ? '#5f6368' :
-                                redListStatus === 'EN' ? '#3c4043' :
-                                redListStatus === 'CR' ? '#202124' : '#5f6368',
-                          border: '1px solid',
-                          borderColor: redListStatus === 'LC' ? '#e8eaed' : 
-                                     redListStatus === 'NT' ? '#dadce0' :
-                                     redListStatus === 'VU' ? '#bdc1c6' :
-                                     redListStatus === 'EN' ? '#9aa0a6' :
-                                     redListStatus === 'CR' ? '#5f6368' : '#e8eaed'
-                        }}>
-                          {redListStatus}
-                        </span>
-                        <span className="text-sm" style={{ color: '#666666' }}>
-                          {redListStatus === 'LC' ? 'Preocupación Menor' :
-                           redListStatus === 'NT' ? 'Casi Amenazada' :
-                           redListStatus === 'VU' ? 'Vulnerable' :
-                           redListStatus === 'EN' ? 'En Peligro' :
-                           redListStatus === 'CR' ? 'Críticamente Amenazada' :
-                           redListStatus === 'EW' ? 'Extinta en Estado Silvestre' :
-                           redListStatus === 'EX' ? 'Extinta' :
-                           redListStatus === 'DD' ? 'Datos Deficientes' : redListStatus}
-                        </span>
-                      </div>
-                    </div>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <div className="border rounded-none p-2 flex flex-col items-center justify-center aspect-square cursor-pointer" style={{ backgroundColor: '#f9f9f9', borderColor: '#dddddd' }}>
+                            <h4 className="mb-2" style={{
+                              color: '#666666',
+                              fontSize: '12px',
+                              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif',
+                              fontWeight: '600'
+                            }}>
+                              Lista Roja IUCN
+                            </h4>
+                            <span className="text-base font-mono px-2 py-1 rounded-none" style={{ 
+                              backgroundColor: redListStatus === 'LC' ? '#f8f9fa' : 
+                                              redListStatus === 'NT' ? '#f1f3f4' :
+                                              redListStatus === 'VU' ? '#e8eaed' :
+                                              redListStatus === 'EN' ? '#dadce0' :
+                                              redListStatus === 'CR' ? '#bdc1c6' : '#f8f9fa',
+                              color: redListStatus === 'LC' ? '#5f6368' : 
+                                    redListStatus === 'NT' ? '#5f6368' :
+                                    redListStatus === 'VU' ? '#5f6368' :
+                                    redListStatus === 'EN' ? '#3c4043' :
+                                    redListStatus === 'CR' ? '#202124' : '#5f6368',
+                              border: '1px solid',
+                              borderColor: redListStatus === 'LC' ? '#e8eaed' : 
+                                         redListStatus === 'NT' ? '#dadce0' :
+                                         redListStatus === 'VU' ? '#bdc1c6' :
+                                         redListStatus === 'EN' ? '#9aa0a6' :
+                                         redListStatus === 'CR' ? '#5f6368' : '#e8eaed'
+                            }}>
+                              {redListStatus}
+                            </span>
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>
+                            {redListStatus === 'LC' ? 'Preocupación Menor' :
+                             redListStatus === 'NT' ? 'Casi Amenazada' :
+                             redListStatus === 'VU' ? 'Vulnerable' :
+                             redListStatus === 'EN' ? 'En Peligro' :
+                             redListStatus === 'CR' ? 'Críticamente Amenazada' :
+                             redListStatus === 'EW' ? 'Extinta en Estado Silvestre' :
+                             redListStatus === 'EX' ? 'Extinta' :
+                             redListStatus === 'DD' ? 'Datos Deficientes' : redListStatus}
+                          </p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
                   )}
                 </div>
               </section>
@@ -399,23 +447,17 @@ export default function SpeciesTechnicalSheet({
                 }}>
                   Recursos
                 </h3>
-                <div className="space-y-4">
-                  <div className="border rounded-none p-4 transition-colors cursor-pointer hover:bg-gray-25 flex items-center justify-center" style={{ backgroundColor: '#f9f9f9', borderColor: '#dddddd' }}>
-                    <div className="w-10 h-10 rounded-none flex items-center justify-center" style={{ backgroundColor: '#f5f5f5' }}>
-                      <Camera className="w-5 h-5" style={{ color: '#333333' }} />
-                    </div>
+                <div className="grid grid-cols-1 gap-2">
+                  <div className="border rounded-none p-2 transition-colors cursor-pointer hover:bg-gray-50 flex items-center justify-center aspect-square" style={{ backgroundColor: '#f9f9f9', borderColor: '#dddddd' }}>
+                    <Camera className="w-8 h-8" style={{ color: '#333333' }} />
                   </div>
 
-                  <div className="border rounded-none p-4 transition-colors cursor-pointer hover:bg-gray-25 flex items-center justify-center" style={{ backgroundColor: '#f9f9f9', borderColor: '#dddddd' }}>
-                    <div className="w-10 h-10 rounded-none flex items-center justify-center" style={{ backgroundColor: '#f5f5f5' }}>
-                      <Volume2 className="w-5 h-5" style={{ color: '#333333' }} />
-                    </div>
+                  <div className="border rounded-none p-2 transition-colors cursor-pointer hover:bg-gray-50 flex items-center justify-center aspect-square" style={{ backgroundColor: '#f9f9f9', borderColor: '#dddddd' }}>
+                    <Volume2 className="w-8 h-8" style={{ color: '#333333' }} />
                   </div>
 
-                  <div className="border rounded-none p-4 transition-colors cursor-pointer hover:bg-gray-25 flex items-center justify-center" style={{ backgroundColor: '#f9f9f9', borderColor: '#dddddd' }}>
-                    <div className="w-10 h-10 rounded-none flex items-center justify-center" style={{ backgroundColor: '#f5f5f5' }}>
-                      <MapPin className="w-5 h-5" style={{ color: '#333333' }} />
-                    </div>
+                  <div className="border rounded-none p-2 transition-colors cursor-pointer hover:bg-gray-50 flex items-center justify-center aspect-square" style={{ backgroundColor: '#f9f9f9', borderColor: '#dddddd' }}>
+                    <MapPin className="w-8 h-8" style={{ color: '#333333' }} />
                   </div>
                 </div>
               </section>
