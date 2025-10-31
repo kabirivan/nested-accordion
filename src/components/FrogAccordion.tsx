@@ -109,7 +109,7 @@ export default function FrogAccordion({ orders }: FrogAccordionProps) {
       </div>
       
       {/* Pisos Climáticos */}
-      <div className="w-40">
+      <div className="w-80">
         <ClimaticFloorChart 
           altitudinalRange={species.altitudinalRange}
           climaticFloors={species.climaticFloors}
@@ -158,7 +158,7 @@ export default function FrogAccordion({ orders }: FrogAccordionProps) {
               <div className="flex-1">Nombre</div>
               <div className="w-12 text-center">En</div>
               <div className="w-16 text-center">LR</div>
-              <div className="w-40 text-center">Distribución</div>
+              <div className="w-80 text-center">Distribución</div>
             </div>
           </div>
           

@@ -18,6 +18,8 @@ export interface FrogSpecies {
   altitudinalRange: {
     min: number;
     max: number;
+    occidente?: { min: number; max: number };
+    oriente?: { min: number; max: number };
   };
   climaticFloors: string[];
   imageUrl?: string;
@@ -240,7 +242,9 @@ export const frogsData: FrogOrder[] = [
                 },
                 altitudinalRange: {
                   min: 0,
-                  max: 1200
+                  max: 1200,
+                  occidente: { min: 0, max: 1000 },
+                  oriente: { min: 200, max: 800 }
                 },
                 climaticFloors: ["Tropical", "Subtropical"]
               },
@@ -285,10 +289,10 @@ export const frogsData: FrogOrder[] = [
                   oriente: true
                 },
                 altitudinalRange: {
-                  min: 0,
-                  max: 1500
+                  min: 3000,
+                  max: 4500
                 },
-                climaticFloors: ["Tropical", "Subtropical"]
+                climaticFloors: ["Frío", "Páramo"]
               },
               {
                 id: "rhinella-ecuatoriana",

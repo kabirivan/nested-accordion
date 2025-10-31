@@ -315,7 +315,7 @@ export default function SpeciesTechnicalSheet({
           </div>
 
           {/* Columna derecha - Sidebar fijo */}
-          <div className="w-80 border-l sticky top-0 h-screen overflow-y-auto">
+          <div className="w-96 border-l sticky top-0 h-screen overflow-y-auto">
             <div style={{ padding: '25px 30px' }} className="space-y-8">
               {/* Información General */}
               <section>
