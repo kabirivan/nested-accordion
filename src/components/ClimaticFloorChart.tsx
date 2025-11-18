@@ -44,7 +44,7 @@ export default function ClimaticFloorChart({ altitudinalRange, climaticFloors }:
   const totalAltitudeRange = 1000 + 1000 + 1000 + 1000 + 1000 + 1000 + 1000 + 1000 + 1000 + 1000; // = 10000m total
   
   // Color plomo por defecto
-  const defaultColor = '#9CA3AF'; // Gris plomo
+  const defaultColor = '#D1D5DB'; // Gris claro
 
   // Determinar qué vertientes deben activarse
   const getActiveVertientes = (): ('occidente' | 'oriente')[] => {

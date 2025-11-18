@@ -24,6 +24,7 @@ import {
 } from '@/components/ui/popover';
 import { Input } from '@/components/ui/input';
 import { frogsData, FrogOrder, FrogFamily, FrogGenus, FrogSpecies } from '@/data/frogsData';
+import ClimaticFloorFilterSlider from './ClimaticFloorFilterSlider';
 
 interface FiltersPanelProps {
   onFiltersChange: (filters: Record<string, unknown>) => void;
@@ -47,13 +48,13 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
     provincia: [] as string[],
     listaRoja: [] as string[],
     endemismo: [] as string[],
-    pisosAltitudinales: [] as string[],
     ecosistemas: [] as string[],
     regionesBiogeograficas: [] as string[],
     reservasBiosfera: [] as string[],
     bosquesProtegidos: [] as string[],
     areasProtegidas: [] as string[],
     // Filtros continuos
+    pisosAltitudinales: { min: 0, max: 5000 },
     areaDistribucion: { min: 1, max: 100000 },
     pluviocidad: { min: 640, max: 4000 },
     temperatura: { min: 5, max: 25 }
@@ -153,12 +154,12 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
       provincia: [] as string[],
       listaRoja: [] as string[],
       endemismo: [] as string[],
-      pisosAltitudinales: [] as string[],
       ecosistemas: [] as string[],
       regionesBiogeograficas: [] as string[],
       reservasBiosfera: [] as string[],
       bosquesProtegidos: [] as string[],
       areasProtegidas: [] as string[],
+      pisosAltitudinales: { min: 0, max: 5000 },
       areaDistribucion: { min: 1, max: 100000 },
       pluviocidad: { min: 640, max: 4000 },
       temperatura: { min: 5, max: 25 }
@@ -387,34 +388,12 @@ export default function FiltersPanel({ onFiltersChange }: FiltersPanelProps) {
           <AccordionItem value="pisosAltitudinales">
             <AccordionTrigger>Pisos altitudinales</AccordionTrigger>
             <AccordionContent>
-              <div className="flex flex-col gap-2">
-                {[
-                  { value: 'tropical-occidental', label: 'Tropical Occidental (0-1000m)' },
-                  { value: 'subtropical-occidental', label: 'Subtropical Occidental (1001-2000m)' },
-                  { value: 'templado-occidental', label: 'Templado Occidental (2001-3000m)' },
-                  { value: 'altoandino', label: 'Altoandino (3001-4800m)' },
-                  { value: 'templado-oriental', label: 'Templado Oriental (2001-3000m)' },
-                  { value: 'subtropical-oriental', label: 'Subtropical Oriental (1001-2000m)' },
-                  { value: 'tropical-oriental', label: 'Tropical Oriental (0-1000m)' }
-                ].map((floor) => {
-                  const isSelected = filters.pisosAltitudinales.includes(floor.value);
-                  return (
-                    <Button
-                      key={floor.value}
-                      variant={isSelected ? 'default' : 'outline'}
-                      size="sm"
-                      onClick={() => handleCategoricalChange('pisosAltitudinales', floor.value)}
-                      className="w-full text-xs px-2 py-1 h-auto min-h-[32px] justify-start text-left rounded-none"
-                      style={{
-                        borderColor: isSelected ? undefined : '#e8e8e8',
-                        color: isSelected ? undefined : '#454545'
-                      }}
-                    >
-                      {floor.label}
-                    </Button>
-                  );
-                })}
-              </div>
+              <ClimaticFloorFilterSlider
+                min={0}
+                max={5000}
+                value={[filters.pisosAltitudinales.min, filters.pisosAltitudinales.max]}
+                onChange={(values) => handleSliderChange('pisosAltitudinales', values)}
+              />
             </AccordionContent>
           </AccordionItem>
 

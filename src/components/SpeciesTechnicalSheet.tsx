@@ -110,8 +110,8 @@ export default function SpeciesTechnicalSheet({
               color: '#1a1a1a',
               letterSpacing: '-0.02em'
             }}>
-              {scientificName}
-            </h1>
+            {scientificName}
+          </h1>
             
             {/* Descriptor y año - MEDIANO */}
             <span className="text-lg font-normal" style={{ 
@@ -345,10 +345,10 @@ export default function SpeciesTechnicalSheet({
                     Distribución altitudinal
                   </h3>
                   <div className="border rounded-none p-4" style={{ backgroundColor: '#f9f9f9', borderColor: '#dddddd' }}>
-                    <ClimaticFloorChart
-                      altitudinalRange={altitudinalRange}
-                      climaticFloors={climaticFloors}
-                    />
+                  <ClimaticFloorChart
+                    altitudinalRange={altitudinalRange}
+                    climaticFloors={climaticFloors}
+                  />
                   </div>
                 </section>
               )}
@@ -386,8 +386,8 @@ export default function SpeciesTechnicalSheet({
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <div className="border rounded-none p-2 flex flex-col items-center justify-center aspect-square cursor-pointer" style={{ backgroundColor: '#f9f9f9', borderColor: '#dddddd' }}>
-                            <h4 className="mb-2" style={{
+                          <div className="flex flex-col items-center gap-2 cursor-pointer">
+                            <h4 style={{
                               color: '#666666',
                               fontSize: '12px',
                               fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif',
@@ -395,38 +395,59 @@ export default function SpeciesTechnicalSheet({
                             }}>
                               Lista Roja IUCN
                             </h4>
-                            <span className="text-base font-mono px-2 py-1 rounded-none" style={{ 
-                              backgroundColor: redListStatus === 'LC' ? '#f8f9fa' : 
-                                              redListStatus === 'NT' ? '#f1f3f4' :
-                                              redListStatus === 'VU' ? '#e8eaed' :
-                                              redListStatus === 'EN' ? '#dadce0' :
-                                              redListStatus === 'CR' ? '#bdc1c6' : '#f8f9fa',
-                              color: redListStatus === 'LC' ? '#5f6368' : 
-                                    redListStatus === 'NT' ? '#5f6368' :
-                                    redListStatus === 'VU' ? '#5f6368' :
-                                    redListStatus === 'EN' ? '#3c4043' :
-                                    redListStatus === 'CR' ? '#202124' : '#5f6368',
-                              border: '1px solid',
-                              borderColor: redListStatus === 'LC' ? '#e8eaed' : 
-                                         redListStatus === 'NT' ? '#dadce0' :
-                                         redListStatus === 'VU' ? '#bdc1c6' :
-                                         redListStatus === 'EN' ? '#9aa0a6' :
-                                         redListStatus === 'CR' ? '#5f6368' : '#e8eaed'
-                            }}>
-                              {redListStatus}
-                            </span>
+                            <div 
+                              className="flex items-center justify-center aspect-square"
+                              style={{ 
+                                width: '120px',
+                                height: '120px',
+                                borderRadius: '100% 0% 100% 100%',
+                                backgroundColor: redListStatus === 'LC' ? '#60c659' : 
+                                                redListStatus === 'NT' ? '#cce226' :
+                                                redListStatus === 'VU' ? '#f9e814' :
+                                                redListStatus === 'EN' ? '#fc7f3f' :
+                                                redListStatus === 'CR' ? '#d81e05' :
+                                                redListStatus === 'EW' ? '#542344' :
+                                                redListStatus === 'EX' ? '#000000' :
+                                                redListStatus === 'DD' ? '#d1d1c6' : '#d1d1c6',
+                                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)'
+                              }}
+                            >
+                              <div className="text-center">
+                                <div className="text-2xl font-bold" style={{ 
+                                  color: (redListStatus === 'LC' || redListStatus === 'NT' || redListStatus === 'VU' || redListStatus === 'DD') ? '#000000' : '#ffffff',
+                                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif'
+                                }}>
+                                  {redListStatus}
+                                </div>
+                                <div className="text-xs mt-1 px-2" style={{ 
+                                  color: (redListStatus === 'LC' || redListStatus === 'NT' || redListStatus === 'VU' || redListStatus === 'DD') ? '#333333' : '#ffffff',
+                                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif',
+                                  whiteSpace: 'pre-line',
+                                  lineHeight: '1.2'
+                                }}>
+                                  {redListStatus === 'LC' ? 'Preocupación\nMenor' :
+                                   redListStatus === 'NT' ? 'Casi\nAmenazada' :
+                                   redListStatus === 'VU' ? 'Vulnerable' :
+                                   redListStatus === 'EN' ? 'En Peligro' :
+                                   redListStatus === 'CR' ? 'Críticamente\nAmenazada' :
+                                   redListStatus === 'EW' ? 'Extinta en\nEstado Silvestre' :
+                                   redListStatus === 'EX' ? 'Extinta' :
+                                   redListStatus === 'DD' ? 'Datos\nDeficientes' : ''}
+                                </div>
+                              </div>
+                            </div>
                           </div>
                         </TooltipTrigger>
                         <TooltipContent>
                           <p>
-                            {redListStatus === 'LC' ? 'Preocupación Menor' :
-                             redListStatus === 'NT' ? 'Casi Amenazada' :
+                            {redListStatus === 'LC' ? 'Least Concern - Preocupación Menor' :
+                             redListStatus === 'NT' ? 'Near Threatened - Casi Amenazada' :
                              redListStatus === 'VU' ? 'Vulnerable' :
-                             redListStatus === 'EN' ? 'En Peligro' :
-                             redListStatus === 'CR' ? 'Críticamente Amenazada' :
-                             redListStatus === 'EW' ? 'Extinta en Estado Silvestre' :
-                             redListStatus === 'EX' ? 'Extinta' :
-                             redListStatus === 'DD' ? 'Datos Deficientes' : redListStatus}
+                             redListStatus === 'EN' ? 'Endangered - En Peligro' :
+                             redListStatus === 'CR' ? 'Critically Endangered - Críticamente Amenazada' :
+                             redListStatus === 'EW' ? 'Extinct in the Wild - Extinta en Estado Silvestre' :
+                             redListStatus === 'EX' ? 'Extinct - Extinta' :
+                             redListStatus === 'DD' ? 'Data Deficient - Datos Deficientes' : redListStatus}
                           </p>
                         </TooltipContent>
                       </Tooltip>

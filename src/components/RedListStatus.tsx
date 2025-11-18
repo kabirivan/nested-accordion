@@ -1,5 +1,4 @@
-import { Badge } from '@/components/ui/badge';
-import { cn } from '@/lib/utils';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface RedListStatusProps {
   readonly status: 'LC' | 'NT' | 'VU' | 'EN' | 'CR' | 'EW' | 'EX' | 'DD';
@@ -10,56 +9,56 @@ export default function RedListStatus({ status }: RedListStatusProps) {
     switch (status) {
       case 'LC': return { 
         label: 'LC', 
-        bgColor: 'bg-gray-50', 
-        textColor: 'text-gray-600', 
+        backgroundColor: '#60c659', 
+        textColor: '#000000', 
         fullName: 'Preocupación Menor' 
       };
       case 'NT': return { 
         label: 'NT', 
-        bgColor: 'bg-gray-100', 
-        textColor: 'text-gray-700', 
+        backgroundColor: '#cce226', 
+        textColor: '#000000', 
         fullName: 'Casi Amenazado' 
       };
       case 'VU': return { 
         label: 'VU', 
-        bgColor: 'bg-gray-200', 
-        textColor: 'text-gray-800', 
+        backgroundColor: '#f9e814', 
+        textColor: '#000000', 
         fullName: 'Vulnerable' 
       };
       case 'EN': return { 
         label: 'EN', 
-        bgColor: 'bg-gray-300', 
-        textColor: 'text-gray-900', 
+        backgroundColor: '#fc7f3f', 
+        textColor: '#ffffff', 
         fullName: 'En Peligro' 
       };
       case 'CR': return { 
         label: 'CR', 
-        bgColor: 'bg-gray-400', 
-        textColor: 'text-gray-950', 
+        backgroundColor: '#d81e05', 
+        textColor: '#ffffff', 
         fullName: 'Críticamente Amenazado' 
       };
       case 'EW': return { 
         label: 'EW', 
-        bgColor: 'bg-gray-500', 
-        textColor: 'text-white', 
+        backgroundColor: '#542344', 
+        textColor: '#ffffff', 
         fullName: 'Extinto en Estado Silvestre' 
       };
       case 'EX': return { 
         label: 'EX', 
-        bgColor: 'bg-gray-700', 
-        textColor: 'text-white', 
+        backgroundColor: '#000000', 
+        textColor: '#ffffff', 
         fullName: 'Extinto' 
       };
       case 'DD': return { 
         label: 'DD', 
-        bgColor: 'bg-gray-100', 
-        textColor: 'text-gray-400', 
+        backgroundColor: '#d1d1c6', 
+        textColor: '#000000', 
         fullName: 'Datos Insuficientes' 
       };
       default: return { 
         label: '?', 
-        bgColor: 'bg-gray-50', 
-        textColor: 'text-gray-400', 
+        backgroundColor: '#d1d1c6', 
+        textColor: '#666666', 
         fullName: 'Desconocido' 
       };
     }
@@ -68,16 +67,27 @@ export default function RedListStatus({ status }: RedListStatusProps) {
   const statusInfo = getStatusInfo(status);
 
   return (
-    <Badge 
-      variant="outline" 
-      className={cn(
-        "transition-all duration-200 hover:scale-105",
-        statusInfo.bgColor,
-        statusInfo.textColor
-      )}
-      title={statusInfo.fullName}
-    >
-      {statusInfo.label}
-    </Badge>
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <div 
+            className="inline-flex items-center justify-center font-semibold text-[10px] px-2 py-1 transition-all duration-200 hover:scale-105 cursor-pointer"
+            style={{
+              backgroundColor: statusInfo.backgroundColor,
+              color: statusInfo.textColor,
+              borderRadius: '100% 0% 100% 100%',
+              minWidth: '32px',
+              minHeight: '32px',
+              boxShadow: '0 1px 3px rgba(0, 0, 0, 0.15)'
+            }}
+          >
+            {statusInfo.label}
+          </div>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p className="font-semibold">{statusInfo.fullName}</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 }
